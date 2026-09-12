@@ -231,10 +231,16 @@ function productCard(p) {
   </article>`;
 }
 
+function brandLogo(b) {
+  return b.logo
+    ? `<span class="ticker__logo">${lazyImg(b.logo, b.name)}</span>`
+    : `<span>${escapeHtml(b.name)}</span>`;
+}
+
 function brandStrip() {
   // El contenido se duplica para que la animación pueda hacer un
   // bucle perfecto de -50% sin salto visible al reiniciar.
-  const items = BRANDS.map((b) => `<span>${escapeHtml(b)}</span>`).join("");
+  const items = BRANDS.map(brandLogo).join("");
   return `<div class="ticker"><div class="ticker__track">${items}${items}</div></div>`;
 }
 
@@ -893,6 +899,7 @@ function renderAbout() {
     </div>
   </section>
   `;
+  mountLazyImages(APP);
 }
 
 /* ---------------------------------------------------------------------- */
@@ -1083,12 +1090,15 @@ function bindQuickAdd() {
 function closeMobileMenu() {
   document.getElementById("mainNav")?.classList.remove("open");
   document.getElementById("overlay")?.classList.remove("open");
+  document.getElementById("burgerBtn")?.classList.remove("open");
+  document.body.classList.remove("nav-open");
 }
 
 function updateHeaderOffset() {
-  const topbar = document.querySelector(".topbar");
+  // Solo .header es sticky (la topbar se desplaza fuera de vista), así
+  // que el hueco reservado para el hero fijo debe ser solo su altura.
   const header = document.querySelector(".header");
-  const h = (topbar?.offsetHeight || 0) + (header?.offsetHeight || 0);
+  const h = header?.offsetHeight || 0;
   document.documentElement.style.setProperty("--header-offset", h + "px");
 }
 
@@ -1150,8 +1160,16 @@ function initChrome() {
   const nav = document.getElementById("mainNav");
   const overlay = document.getElementById("overlay");
   burger.addEventListener("click", () => {
-    nav.classList.toggle("open");
-    overlay.classList.toggle("open");
+    const willOpen = !nav.classList.contains("open");
+    if (willOpen) {
+      // Usa la posición real del header (puede no estar aún "pegado"
+      // arriba si se abre nada más cargar, con la topbar aún visible).
+      nav.style.top = document.querySelector(".header").getBoundingClientRect().bottom + "px";
+    }
+    nav.classList.toggle("open", willOpen);
+    burger.classList.toggle("open", willOpen);
+    document.body.classList.toggle("nav-open", willOpen);
+    burger.setAttribute("aria-label", willOpen ? "Cerrar menú" : "Abrir menú");
   });
   overlay.addEventListener("click", closeMobileMenu);
 

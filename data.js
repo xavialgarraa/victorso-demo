@@ -36,7 +36,19 @@ const CATEGORIES = [
   { slug: "outlet", title: "Outlet", icon: "🏷️", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/6/8/1200x1200_q100_png9_cr0_fix1/alphatheta-euphonia1.jpg" },
 ];
 
-const BRANDS = ["Pioneer DJ", "AlphaTheta", "Walkasse", "RCF", "Yamaha", "QSC", "Rode", "Focusrite", "Sennheiser"];
+/** Logos reales extraídos del catálogo público de victorso.com; Walkasse
+ * no tiene logo propio publicado ahí, así que se muestra como texto. */
+const BRANDS = [
+  { name: "Pioneer DJ", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/165x83_q100_png9_cr0_fix1/pioneer-dj.png" },
+  { name: "AlphaTheta", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosmarcas2/165x83_q100_png9_cr0_fix1/AlphaTheta_logo_Horizontal_k.jpg" },
+  { name: "Walkasse", logo: null },
+  { name: "RCF", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/logo_rcf.jpg" },
+  { name: "Yamaha", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/285_Victorso.jpg" },
+  { name: "QSC", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/qsc_logo.jpg" },
+  { name: "Rode", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/rode_logo.png" },
+  { name: "Focusrite", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/focusrite_logo.jpg" },
+  { name: "Sennheiser", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosmarcas2/165x83_q100_png9_cr0_fix1/senheiser.png" },
+];
 
 /** Genera un array de variantes con precio derivado del precio base */
 function buildVariants(base, options) {
