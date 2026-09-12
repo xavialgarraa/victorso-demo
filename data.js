@@ -27,13 +27,13 @@
 const HERO_FRAMES = { path: "assets/hero/frames/", count: 96, ext: "webp" };
 
 const CATEGORIES = [
-  { slug: "dj", title: "Equipos DJ", icon: "🎛️", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/6/7/8/1200x1200_q100_png9_cr0_fix1/CDJ-1500X_prm_angle_260611.jpg" },
-  { slug: "sonido", title: "Sonido Profesional", icon: "🔊", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/0/5/1200x1200_q100_png9_cr0_fix1/001_ART-915-A-front.jpg" },
-  { slug: "estudio", title: "Material de Estudio", icon: "🎙️", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/7/6/1200x1200_q100_png9_cr0_fix1/controlador-ableton-live-akai-apc64.jpg" },
-  { slug: "auriculares", title: "Auriculares", icon: "🎧", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/1/2/1200x1200_q100_png9_cr0_fix1/sennheiser-hd400-1-jpg.jpg" },
-  { slug: "cables", title: "Cables", icon: "🔌", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/3/0/1200x1200_q100_png9_cr0_fix1/11.jpg" },
-  { slug: "flightcases", title: "Flight-Cases y Bolsas", icon: "🧳", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/6/8/0/1200x1200_q100_png9_cr0_fix1/AlphaTheta-DJC-AN-BAG-2.jpg" },
-  { slug: "outlet", title: "Outlet", icon: "🏷️", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/6/8/1200x1200_q100_png9_cr0_fix1/alphatheta-euphonia1.jpg" },
+  { slug: "dj", title: "Equipos DJ", icon: "sliders", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/6/7/8/1200x1200_q100_png9_cr0_fix1/CDJ-1500X_prm_angle_260611.jpg" },
+  { slug: "sonido", title: "Sonido Profesional", icon: "speaker", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/0/5/1200x1200_q100_png9_cr0_fix1/001_ART-915-A-front.jpg" },
+  { slug: "estudio", title: "Material de Estudio", icon: "mic", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/7/6/1200x1200_q100_png9_cr0_fix1/controlador-ableton-live-akai-apc64.jpg" },
+  { slug: "auriculares", title: "Auriculares", icon: "headphones", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/1/2/1200x1200_q100_png9_cr0_fix1/sennheiser-hd400-1-jpg.jpg" },
+  { slug: "cables", title: "Cables", icon: "plug", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/3/0/1200x1200_q100_png9_cr0_fix1/11.jpg" },
+  { slug: "flightcases", title: "Flight-Cases y Bolsas", icon: "suitcase", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/6/8/0/1200x1200_q100_png9_cr0_fix1/AlphaTheta-DJC-AN-BAG-2.jpg" },
+  { slug: "outlet", title: "Outlet", icon: "tag", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/6/8/1200x1200_q100_png9_cr0_fix1/alphatheta-euphonia1.jpg" },
 ];
 
 /** Logos reales extraídos del catálogo público de victorso.com; Walkasse
@@ -415,10 +415,27 @@ function seededReviews(product) {
   }));
 }
 
-/** PRODUCTS: forma final consumida por app.js, análoga a Shopify Storefront API */
+/** Mapeo de nuestra `category` (interna, usada para rutas /category/:slug)
+ * al `productType` que expondría Shopify — son dos campos distintos en
+ * Storefront API (productType es libre; las categorías reales de la
+ * tienda serían Collections, no un campo del producto). */
+const CATEGORY_TO_PRODUCT_TYPE = {
+  dj: "Equipos DJ", sonido: "Sonido Profesional", estudio: "Material de Estudio",
+  auriculares: "Auriculares", cables: "Cables", flightcases: "Flight-Cases y Bolsas", outlet: "Outlet",
+};
+
+/** PRODUCTS: forma final consumida por app.js, análoga a Shopify Storefront API.
+ * `available` se mantiene como nombre interno (así queda el resto del código),
+ * pero se añade `availableForSale` — el nombre real del campo en Storefront API —
+ * para que la migración futura sea un simple find&replace. */
 const PRODUCTS = RAW_PRODUCTS.map((p) => {
-  const variants = buildVariants(p, p.options);
-  const withReviews = { ...p, variants };
+  const variants = buildVariants(p, p.options).map((v) => ({ ...v, availableForSale: v.available }));
+  const withReviews = {
+    ...p,
+    variants,
+    productType: CATEGORY_TO_PRODUCT_TYPE[p.category] || p.category,
+    currencyCode: "EUR",
+  };
   return { ...withReviews, reviews: seededReviews(withReviews) };
 });
 

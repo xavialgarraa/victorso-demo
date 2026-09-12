@@ -503,7 +503,7 @@ function renderHome() {
       <div class="catgrid">
         ${CATEGORIES.map((c) => `
           <a class="catcard" href="#/category/${c.slug}">
-            <span class="catcard__icon">${c.icon}</span>
+            ${icon(c.icon, "catcard__icon")}
             ${lazyImg(c.image, c.title)}
             <span class="catcard__label">${escapeHtml(c.title)}</span>
           </a>`).join("")}
