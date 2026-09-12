@@ -83,6 +83,30 @@ function toast(msg) {
 }
 
 /* ---------------------------------------------------------------------- */
+/* Modo claro / oscuro                                                     */
+/* ---------------------------------------------------------------------- */
+
+const Theme = {
+  KEY: "vs_demo_theme",
+  effective() {
+    const attr = document.documentElement.getAttribute("data-theme");
+    if (attr) return attr;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  },
+  toggle() {
+    const next = this.effective() === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem(this.KEY, next);
+    this.updateIcon();
+  },
+  updateIcon() {
+    const el = document.getElementById("themeIcon");
+    if (!el) return;
+    el.innerHTML = this.effective() === "dark" ? ICONS.sun : ICONS.moon;
+  },
+};
+
+/* ---------------------------------------------------------------------- */
 /* Carrito (estado local, persistido en localStorage)                     */
 /* ---------------------------------------------------------------------- */
 
@@ -249,7 +273,7 @@ const HERO_SCENES = [
 function scrollHeroMarkup() {
   const scenesWithImg = HERO_SCENES.map((s) => ({ ...s, image: s.image || CATEGORIES.find((c) => c.slug === s.slug)?.image }));
   return `
-  <section class="scrollhero" style="height:${HERO_SCENES.length * 150}vh">
+  <section class="scrollhero" style="height:calc(${HERO_SCENES.length * 150}vh + 100vh)">
     <div class="scrollhero__stage">
       <div class="scrollhero__bg">
         ${typeof HERO_FRAMES !== "undefined" && HERO_FRAMES
@@ -906,7 +930,7 @@ function renderCart() {
           ${lines.map((l) => `
             <div class="cart-item" data-variant="${l.variant.id}">
               ${lazyImg(l.product.images[0], l.product.title)}
-              <div>
+              <div class="cart-item__info">
                 <div class="cart-item__title">${escapeHtml(l.product.title)}</div>
                 <div class="cart-item__variant">${escapeHtml(l.product.optionName)}: ${escapeHtml(l.variant.title)}</div>
                 <div class="cart-item__price">${euros(l.variant.price)}</div>
@@ -1064,7 +1088,11 @@ function bindQuickAdd() {
 }
 
 function closeMobileMenu() {
-  document.getElementById("mainNav")?.classList.remove("open");
+  const nav = document.getElementById("mainNav");
+  if (!nav || !nav.classList.contains("open")) return;
+  nav.classList.remove("open");
+  nav.classList.add("closing");
+  setTimeout(() => nav.classList.remove("closing"), 220);
   document.getElementById("overlay")?.classList.remove("open");
   document.getElementById("burgerBtn")?.classList.remove("open");
   document.body.classList.remove("nav-open");
@@ -1093,7 +1121,17 @@ const NAV_LINKS = [
 function applyChrome() {
   document.getElementById("mainNav").innerHTML = NAV_LINKS
     .map((l) => `<a href="${l.href}" class="${l.cls || ""}">${t(l.key)}</a>`).join("");
-  document.getElementById("mainNav").querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMobileMenu));
+  document.getElementById("mainNav").querySelectorAll("a").forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const nav = document.getElementById("mainNav");
+      if (nav.classList.contains("open")) {
+        e.preventDefault();
+        const href = a.getAttribute("href");
+        closeMobileMenu();
+        setTimeout(() => { location.hash = href; }, 220);
+      }
+    });
+  });
 
   document.getElementById("searchInput").placeholder = t("searchPlaceholder");
   document.getElementById("topbarShipText").innerHTML = `${t("shipBar")} <strong>149€</strong>`;
@@ -1158,6 +1196,9 @@ function initChrome() {
   document.addEventListener("click", (e) => {
     if (!document.getElementById("langSelect").contains(e.target)) langMenu.classList.remove("open");
   });
+
+  document.getElementById("themeToggle").addEventListener("click", () => Theme.toggle());
+  Theme.updateIcon();
 
   document.getElementById("searchForm").addEventListener("submit", (e) => {
     e.preventDefault();
