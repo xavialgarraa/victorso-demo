@@ -232,7 +232,10 @@ function productCard(p) {
 }
 
 function brandStrip() {
-  return `<div class="brandstrip">${BRANDS.map((b) => `<span>${escapeHtml(b)}</span>`).join("")}</div>`;
+  // El contenido se duplica para que la animación pueda hacer un
+  // bucle perfecto de -50% sin salto visible al reiniciar.
+  const items = BRANDS.map((b) => `<span>${escapeHtml(b)}</span>`).join("");
+  return `<div class="ticker"><div class="ticker__track">${items}${items}</div></div>`;
 }
 
 function testimonialsBlock() {
