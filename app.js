@@ -83,30 +83,6 @@ function toast(msg) {
 }
 
 /* ---------------------------------------------------------------------- */
-/* Modo claro / oscuro                                                     */
-/* ---------------------------------------------------------------------- */
-
-const Theme = {
-  KEY: "vs_demo_theme",
-  effective() {
-    const attr = document.documentElement.getAttribute("data-theme");
-    if (attr) return attr;
-    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  },
-  toggle() {
-    const next = this.effective() === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem(this.KEY, next);
-    this.updateIcon();
-  },
-  updateIcon() {
-    const el = document.getElementById("themeIcon");
-    if (!el) return;
-    el.innerHTML = this.effective() === "dark" ? ICONS.sun : ICONS.moon;
-  },
-};
-
-/* ---------------------------------------------------------------------- */
 /* Carrito (estado local, persistido en localStorage)                     */
 /* ---------------------------------------------------------------------- */
 
@@ -265,9 +241,9 @@ function testimonialsBlock() {
  * las zonas oscuras del centro.
  */
 const HERO_SCENES = [
-  { slug: "dj", titleKey: "hero1Title", descKey: "hero1Desc", ctaKey: "heroCtaDj", image: "assets/hero/scene1-sala.png", origin: "50% 42%" },
-  { slug: "sonido", titleKey: "hero2Title", descKey: "hero2Desc", ctaKey: "navSonido", image: "assets/hero/scene2-escenario.png", origin: "50% 38%" },
-  { slug: "dj", titleKey: "hero3Title", descKey: "hero3Desc", ctaKey: "heroCtaDj", image: "assets/hero/scene3-mesa.png", origin: "50% 62%" },
+  { slug: "dj", eyebrowKey: "hero1Eyebrow", titleKey: "hero1Title", descKey: "hero1Desc", ctaKey: "heroCtaDj", image: "assets/hero/scene1-sala.png", origin: "50% 42%" },
+  { slug: "sonido", eyebrowKey: "hero2Eyebrow", titleKey: "hero2Title", descKey: "hero2Desc", ctaKey: "navSonido", image: "assets/hero/scene2-escenario.png", origin: "50% 38%" },
+  { slug: "dj", eyebrowKey: "hero3Eyebrow", titleKey: "hero3Title", descKey: "hero3Desc", ctaKey: "heroCtaDj", image: "assets/hero/scene3-mesa.png", origin: "50% 62%" },
 ];
 
 function scrollHeroMarkup() {
@@ -284,7 +260,7 @@ function scrollHeroMarkup() {
         <div class="scrollhero__inner">
           ${scenesWithImg.map((s, i) => `
             <div class="scrollhero__scene ${i === 0 ? "active" : ""}" data-scene="${i}">
-              <div class="scrollhero__eyebrow">${t("heroEyebrow")}</div>
+              <div class="scrollhero__eyebrow">${t(s.eyebrowKey)}</div>
               <h1 class="scrollhero__title">${t(s.titleKey)}</h1>
               <p class="scrollhero__desc">${t(s.descKey)}</p>
               <div class="scrollhero__actions">
@@ -1182,9 +1158,6 @@ function initChrome() {
   document.addEventListener("click", (e) => {
     if (!document.getElementById("langSelect").contains(e.target)) langMenu.classList.remove("open");
   });
-
-  document.getElementById("themeToggle").addEventListener("click", () => Theme.toggle());
-  Theme.updateIcon();
 
   document.getElementById("searchForm").addEventListener("submit", (e) => {
     e.preventDefault();

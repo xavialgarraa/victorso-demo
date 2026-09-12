@@ -1,39 +1,18 @@
 /* ==========================================================================
    Victor So Professional — Demo prototype styles
    Mobile-first. Paleta: rojo (#e30613), negro, blanco.
-   Tokens semánticos + soporte modo claro/oscuro (prefers-color-scheme
-   y toggle manual vía [data-theme] en <html>).
+   Tema oscuro fijo (sin toggle claro/oscuro).
    ========================================================================== */
 
 :root {
   --red: #e30613;
   --red-dark: #b70510;
-  --red-soft: #ffe4e6;
   --radius: 12px;
   --radius-sm: 8px;
   --maxw: 1240px;
   --ease: cubic-bezier(.22,.61,.36,1);
   font-size: 16px;
 
-  /* Modo claro (por defecto) */
-  --bg: #ffffff;
-  --surface: #ffffff;
-  --surface-alt: #f4f4f5;
-  --surface-raised: #ffffff;
-  --img-bg: #f1f1f2;
-  --text: #121214;
-  --text-muted: #5b5b60;
-  --text-soft: #8a8a90;
-  --border: #e7e7e9;
-  --border-strong: #d3d3d6;
-  --shadow: 0 2px 10px rgba(20,20,25,.06);
-  --shadow-lg: 0 16px 40px rgba(20,20,25,.14);
-  --header-bg: #111113;
-  --overlay: rgba(10,10,12,.55);
-  --header-offset: 96px;
-}
-
-:root[data-theme="dark"] {
   --bg: #0c0c0e;
   --surface: #17171a;
   --surface-alt: #1e1e22;
@@ -48,25 +27,7 @@
   --shadow-lg: 0 20px 50px rgba(0,0,0,.5);
   --header-bg: #0c0c0e;
   --overlay: rgba(0,0,0,.7);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0c0c0e;
-    --surface: #17171a;
-    --surface-alt: #1e1e22;
-    --surface-raised: #1c1c20;
-    --img-bg: #eeeeef;
-    --text: #f2f2f3;
-    --text-muted: #a8a8ae;
-    --text-soft: #77777d;
-    --border: #2a2a2f;
-    --border-strong: #3a3a40;
-    --shadow: 0 2px 10px rgba(0,0,0,.35);
-    --shadow-lg: 0 20px 50px rgba(0,0,0,.5);
-    --header-bg: #0c0c0e;
-    --overlay: rgba(0,0,0,.7);
-  }
+  --header-offset: 96px;
 }
 
 * { box-sizing: border-box; }
@@ -100,8 +61,6 @@ ul { list-style: none; margin: 0; padding: 0; }
 .topbar__contact a .icon { font-size: .95rem; }
 .topbar__contact a:hover { opacity: 1; color: #ff8b93; }
 
-.theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,.08); border: none; color: #fff; font-size: .95rem; }
-.theme-toggle:hover { background: rgba(255,255,255,.18); }
 
 .lang-select { position: relative; }
 .lang-select__btn { display: inline-flex; align-items: center; gap: 5px; background: none; border: none; color: #fff; font-size: .8rem; padding: 2px 4px; }
@@ -440,11 +399,7 @@ body.nav-open { overflow: hidden; }
 .pay-method { display: flex; align-items: center; gap: 12px; border: 2px solid var(--border); border-radius: 8px; padding: 12px 14px; cursor: pointer; font-size: .88rem; font-weight: 600; color: var(--text); }
 .pay-method .icon { font-size: 1.2rem; color: var(--text-muted); }
 .pay-method input { accent-color: var(--red); }
-.pay-method.selected { border-color: var(--red); background: var(--red-soft); }
-:root[data-theme="dark"] .pay-method.selected { background: rgba(227,6,19,.14); }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .pay-method.selected { background: rgba(227,6,19,.14); }
-}
+.pay-method.selected { border-color: var(--red); background: rgba(227,6,19,.14); }
 .order-summary { background: var(--surface-alt); border-radius: var(--radius); padding: 20px; }
 .order-summary__item { display: flex; justify-content: space-between; font-size: .85rem; padding: 6px 0; color: var(--text); }
 .mock-note { display: flex; gap: 10px; align-items: flex-start; background: var(--surface-alt); border: 1px solid var(--border-strong); color: var(--text-muted); font-size: .78rem; padding: 12px 14px; border-radius: 8px; margin-bottom: 16px; }
