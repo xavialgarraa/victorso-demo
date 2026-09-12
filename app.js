@@ -101,8 +101,11 @@ const Theme = {
   },
   updateIcon() {
     const el = document.getElementById("themeIcon");
-    if (!el) return;
-    el.innerHTML = this.effective() === "dark" ? ICONS.sun : ICONS.moon;
+    if (el) el.innerHTML = this.effective() === "dark" ? ICONS.sun : ICONS.moon;
+    const rowIcon = document.getElementById("langThemeIcon");
+    const rowLabel = document.getElementById("langThemeLabel");
+    if (rowIcon) rowIcon.innerHTML = this.effective() === "dark" ? ICONS.sun : ICONS.moon;
+    if (rowLabel) rowLabel.textContent = this.effective() === "dark" ? t("themeLight") : t("themeDark");
   },
 };
 
@@ -1153,11 +1156,18 @@ function applyChrome() {
   document.getElementById("langBtnLabel").textContent = LOCALES[I18n.current].flag;
 
   const langMenu = document.getElementById("langMenu");
-  langMenu.innerHTML = Object.entries(LOCALES).map(([code, l]) => `
+  langMenu.innerHTML = `
+    <li class="lang-select__theme" id="langThemeToggle" role="option">
+      <span class="icon" id="langThemeIcon"></span>
+      <span id="langThemeLabel"></span>
+    </li>
+    ${Object.entries(LOCALES).map(([code, l]) => `
     <li role="option" data-lang="${code}" class="${code === I18n.current ? "active" : ""}">
-      <span>${escapeHtml(l.label)}</span><span>${escapeHtml(l.urlHint)}</span>
-    </li>`).join("");
-  langMenu.querySelectorAll("li").forEach((li) => {
+      <span class="lang-select__flag">${l.flag}</span>
+      <span class="lang-select__name">${escapeHtml(l.label)}</span>
+      <span class="lang-select__hint">${escapeHtml(l.urlHint)}</span>
+    </li>`).join("")}`;
+  langMenu.querySelectorAll("li[data-lang]").forEach((li) => {
     li.addEventListener("click", () => {
       const code = li.dataset.lang;
       I18n.set(code);
@@ -1167,6 +1177,9 @@ function applyChrome() {
       toast(t("toastLang", LOCALES[code].urlHint));
     });
   });
+
+  Theme.updateIcon();
+  document.getElementById("langThemeToggle").addEventListener("click", () => Theme.toggle());
 }
 
 function initChrome() {
