@@ -209,13 +209,14 @@ window.addEventListener("hashchange", router);
 
 function productCard(p) {
   const hasOffer = p.compareAtPrice && p.compareAtPrice > p.price;
+  const pct = hasOffer ? Math.round((1 - p.price / p.compareAtPrice) * 100) : 0;
   const isOutlet = p.category === "outlet";
   return `
   <article class="pcard">
     <a href="#/product/${p.handle}">
       <div class="pcard__imgwrap">
         <div class="pcard__badges">
-          ${hasOffer ? `<span class="badge badge--offer">${t("badgeOffer")}</span>` : ""}
+          ${hasOffer ? `<span class="badge badge--offer">-${pct}%</span>` : ""}
           ${isOutlet ? `<span class="badge badge--outlet">${t("badgeOutlet")}</span>` : ""}
         </div>
         ${lazyImg(p.images[0], p.title)}
@@ -223,21 +224,24 @@ function productCard(p) {
       <div class="pcard__body">
         <div class="pcard__vendor">${escapeHtml(p.vendor)}</div>
         <div class="pcard__title">${escapeHtml(p.title)}</div>
-        <div class="pcard__rating"><span class="stars">${stars(p.rating)}</span> (${p.reviewsCount})</div>
-        <div class="pcard__price">
-          <span class="now">${euros(p.price)}</span>
-          ${hasOffer ? `<span class="was">${euros(p.compareAtPrice)}</span>` : ""}
-        </div>
+        <div class="pcard__rating"><span class="stars">${stars(p.rating)}</span> <span class="pcard__reviews">(${p.reviewsCount})</span></div>
       </div>
     </a>
-    <button class="btn btn--dark btn--block pcard__addbtn" data-quickadd="${p.handle}">${t("addToCart")}</button>
+    <div class="pcard__footer">
+      <div class="pcard__price">
+        <span class="now">${euros(p.price)}</span>
+        ${hasOffer ? `<span class="was">${euros(p.compareAtPrice)}</span>` : ""}
+      </div>
+      <button class="pcard__addbtn" data-quickadd="${p.handle}" aria-label="${t("addToCart")}">${icon("cart")}</button>
+    </div>
   </article>`;
 }
 
 function brandLogo(b) {
+  const href = `#/search?brand=${encodeURIComponent(b.name)}`;
   return b.logo
-    ? `<span class="ticker__logo">${lazyImg(b.logo, b.name)}</span>`
-    : `<span>${escapeHtml(b.name)}</span>`;
+    ? `<a class="ticker__logo" href="${href}" aria-label="${escapeHtml(b.name)}">${lazyImg(b.logo, b.name)}</a>`
+    : `<a class="ticker__pill" href="${href}">${escapeHtml(b.name)}</a>`;
 }
 
 function brandStrip() {
@@ -563,11 +567,13 @@ function renderCategory(slug, query) {
 
 function renderSearch(query) {
   const term = (query.get("q") || "").toLowerCase().trim();
+  const brands = query.getAll("brand");
   const baseProducts = term
     ? PRODUCTS.filter((p) => (p.title + " " + p.vendor + " " + p.tags.join(" ")).toLowerCase().includes(term))
     : PRODUCTS;
+  const title = term ? `“${term}”` : brands.length ? brands.join(", ") : t("sectionBestsellers");
   renderListing({
-    title: term ? `“${term}”` : t("sectionBestsellers"),
+    title,
     baseProducts,
     query,
     basePath: `/search`,
