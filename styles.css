@@ -166,7 +166,15 @@ h1, h2, h3, h4, .scrollhero__title, .section__head h2, .section-title-lg { font-
 .search input::placeholder { color: rgba(255,255,255,.55); }
 .search button { display: flex; align-items: center; justify-content: center; background: var(--red); color: #fff; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: .95rem; }
 
-.header__actions { display: flex; align-items: center; gap: 14px; margin-left: auto; }
+/* En móvil el buscador sigue ocupando el hueco entre logo y cesta,
+   como antes; en escritorio se agrupa junto a la cesta a la derecha. */
+.header__right { display: contents; }
+@media (min-width: 900px) {
+  .header__right { display: flex; align-items: center; gap: 18px; margin-left: auto; }
+  .header__right .search { flex: none; width: 280px; max-width: none; }
+}
+
+.header__actions { display: flex; align-items: center; gap: 14px; }
 .cart-btn { position: relative; font-size: 1.35rem; color: #fff; display: inline-flex; }
 .cart-btn__count { position: absolute; top: -8px; right: -12px; background: var(--red); color: #fff; font-size: .65rem; font-weight: 700; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; }
 
