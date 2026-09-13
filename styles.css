@@ -28,7 +28,7 @@
   --surface-alt: #f4f4f5;
   --surface-raised: #ffffff;
   --img-bg: #f1f1f2;
-  --text: #2a2a2e;
+  --text: #3d3d42;
   --text-muted: #5b5b60;
   --text-soft: #8a8a90;
   --border: #e7e7e9;
@@ -141,7 +141,7 @@ h1, h2, h3, h4, .scrollhero__title, .section__head h2, .section-title-lg { font-
 /* El PNG del logo trae el texto dibujado más abajo que el trazo del
    check (que sube muy alto), así que centrarlo entero deja el texto
    visualmente bajo respecto al buscador; se compensa desplazándolo. */
-.logo img.logo__full { transform: translateY(-8%); }
+.logo img.logo__full { transform: translateY(-2%); }
 .logo--footer img { height: 34px; width: auto; }
 .logo img.logo__compact { display: block; height: 30px; width: 36px; }
 .logo img.logo__full { display: none; }
