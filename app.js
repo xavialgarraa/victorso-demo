@@ -890,18 +890,6 @@ function renderAbout() {
   <section class="section about-page">
     <div class="container">
       <h1 class="section-title-lg">${t("aboutTitle")}</h1>
-      <div class="about-page__grid">
-        <div class="about-page__text">
-          <p>${t("aboutP1")}</p>
-          <p>${t("aboutP2")}</p>
-          <p>${t("aboutP3")}</p>
-        </div>
-        <div class="about-page__stats">
-          <div class="about-stat"><span class="about-stat__num">1987</span><span>${t("aboutStatYear")}</span></div>
-          <div class="about-stat"><span class="about-stat__num">+35</span><span>${t("aboutStatExp")}</span></div>
-          <div class="about-stat"><span class="about-stat__num">100%</span><span>${t("aboutStatWarranty")}</span></div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -921,13 +909,30 @@ function renderAbout() {
 
   <section class="section section--muted reveal">
     <div class="container">
+      <div class="about-page__grid">
+        <div class="about-page__text">
+          <p>${t("aboutP1")}</p>
+          <p>${t("aboutP2")}</p>
+          <p>${t("aboutP3")}</p>
+        </div>
+        <div class="about-page__stats">
+          <div class="about-stat"><span class="about-stat__num">1987</span><span>${t("aboutStatYear")}</span></div>
+          <div class="about-stat"><span class="about-stat__num">+35</span><span>${t("aboutStatExp")}</span></div>
+          <div class="about-stat"><span class="about-stat__num">100%</span><span>${t("aboutStatWarranty")}</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="container">
       <div class="section__head"><h2>${t("aboutInstallTitle")}</h2></div>
       <p class="visit-text">${t("aboutInstallIntro")}</p>
       <a class="btn btn--primary" href="#/instalaciones">${icon("arrowRight")} ${t("aboutInstallCta")}</a>
     </div>
   </section>
 
-  <section class="section reveal">
+  <section class="section section--muted reveal">
     <div class="container">
       <div class="section__head"><h2>${t("aboutBrands")}</h2></div>
       ${brandStrip()}
@@ -1271,6 +1276,7 @@ function applyChrome() {
   document.getElementById("footerContactTitle").textContent = t("footerContact");
   document.getElementById("footerRightsText").textContent = `© 2026 Victor So Professional. ${t("footerRights")}`;
   document.getElementById("footerHoursText").textContent = t("footerHours");
+  document.getElementById("footerLocationLink").lastChild.textContent = " " + t("footerLocation");
   document.getElementById("footerBadgeText").textContent = t("footerBadge");
   document.getElementById("langBtnLabel").innerHTML = flagHtml(LOCALES[I18n.current].flag);
 

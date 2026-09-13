@@ -542,6 +542,9 @@ body.nav-open { overflow: hidden; }
 .footer__social a:hover { background: var(--red); color: #fff; }
 .footer__bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; padding: 16px; border-top: 1px solid rgba(255,255,255,.08); font-size: .75rem; color: #777; }
 .footer__badge { background: rgba(255,255,255,.08); padding: 4px 10px; border-radius: 20px; color: #ddd; }
+.footer__location { display: flex; justify-content: center; padding: 18px 16px; border-top: 1px solid rgba(255,255,255,.08); }
+.footer__location a { display: inline-flex; align-items: center; gap: 8px; color: #fff; font-weight: 700; font-size: .95rem; padding: 10px 20px; border-radius: 30px; border: 1.5px solid rgba(255,255,255,.25); transition: border-color .2s ease, color .2s ease, transform .18s ease; }
+.footer__location a:hover { border-color: var(--red); color: #ff8b93; transform: translateY(-1px); }
 
 /* ---------- About page ---------- */
 .about-page__grid { display: grid; gap: 30px; }
