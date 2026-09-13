@@ -894,6 +894,20 @@ function renderAbout() {
     </div>
   </section>
 
+  <section class="section reveal">
+    <div class="container">
+      <div class="section__head"><h2>${t("aboutVisitTitle")}</h2></div>
+      <div class="visit-grid">
+        <div class="visit-photo">${lazyImg("assets/tienda-fachada.jpeg", "Fachada de la tienda Victor So Professional")}</div>
+        <div class="visit-map">
+          <iframe src="https://www.google.com/maps?q=41.7040354,2.8498664&z=16&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        </div>
+      </div>
+      <p class="visit-text">${t("aboutVisitText")}</p>
+      <a class="btn btn--primary" href="https://maps.app.goo.gl/rCt2WshcWTawViw28" target="_blank" rel="noopener">${icon("pin")} ${t("aboutVisitCta")}</a>
+    </div>
+  </section>
+
   <section class="section section--muted reveal">
     <div class="container">
       <div class="section__head"><h2>${t("aboutBrands")}</h2></div>
