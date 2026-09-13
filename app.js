@@ -34,6 +34,14 @@ function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
+/** LOCALES.flag es normalmente un emoji de bandera; para idiomas sin
+ * bandera oficial en Unicode (como el catalán) es la ruta a una imagen. */
+function flagHtml(flag) {
+  return flag.includes("/")
+    ? `<img src="${flag}" alt="" class="flag-img">`
+    : flag;
+}
+
 /** Observador de lazy-load para imágenes con data-src */
 const lazyObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
@@ -100,12 +108,14 @@ const Theme = {
     this.updateIcon();
   },
   updateIcon() {
+    const iconHtml = this.effective() === "dark" ? ICONS.sun : ICONS.moon;
+    const label = this.effective() === "dark" ? t("themeLight") : t("themeDark");
     const el = document.getElementById("themeIcon");
-    if (el) el.innerHTML = this.effective() === "dark" ? ICONS.sun : ICONS.moon;
-    const rowIcon = document.getElementById("langThemeIcon");
-    const rowLabel = document.getElementById("langThemeLabel");
-    if (rowIcon) rowIcon.innerHTML = this.effective() === "dark" ? ICONS.sun : ICONS.moon;
-    if (rowLabel) rowLabel.textContent = this.effective() === "dark" ? t("themeLight") : t("themeDark");
+    if (el) el.innerHTML = iconHtml;
+    const navIcon = document.getElementById("mainnavThemeIcon");
+    const navLabel = document.getElementById("mainnavThemeLabel");
+    if (navIcon) navIcon.innerHTML = iconHtml;
+    if (navLabel) navLabel.textContent = label;
   },
 };
 
@@ -1208,7 +1218,19 @@ const NAV_LINKS = [
 
 function applyChrome() {
   document.getElementById("mainNav").innerHTML = NAV_LINKS
-    .map((l) => `<a href="${l.href}" class="${l.cls || ""}">${t(l.key)}</a>`).join("");
+    .map((l) => `<a href="${l.href}" class="${l.cls || ""}">${t(l.key)}</a>`).join("") + `
+    <div class="mainnav__utils">
+      <div class="mainnav__langs">
+        ${Object.entries(LOCALES).map(([code, l]) => `
+          <button class="mainnav__lang ${code === I18n.current ? "active" : ""}" data-lang="${code}">
+            ${flagHtml(l.flag)}<span>${escapeHtml(l.label)}</span>
+          </button>`).join("")}
+      </div>
+      <button class="mainnav__theme" id="mainnavTheme">
+        <span class="icon" id="mainnavThemeIcon"></span>
+        <span id="mainnavThemeLabel"></span>
+      </button>
+    </div>`;
   document.getElementById("mainNav").querySelectorAll("a").forEach((a) => {
     a.addEventListener("click", (e) => {
       const nav = document.getElementById("mainNav");
@@ -1220,6 +1242,16 @@ function applyChrome() {
       }
     });
   });
+  document.getElementById("mainNav").querySelectorAll(".mainnav__lang").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const code = btn.dataset.lang;
+      I18n.set(code);
+      applyChrome();
+      router();
+      toast(t("toastLang", LOCALES[code].urlHint));
+    });
+  });
+  document.getElementById("mainnavTheme").addEventListener("click", () => Theme.toggle());
 
   document.getElementById("searchInput").placeholder = t("searchPlaceholder");
   document.getElementById("topbarShipText").innerHTML = `${t("shipBar")} <strong>149€</strong>`;
@@ -1239,20 +1271,15 @@ function applyChrome() {
   document.getElementById("footerContactTitle").textContent = t("footerContact");
   document.getElementById("footerRightsText").textContent = `© 2026 Victor So Professional. ${t("footerRights")}`;
   document.getElementById("footerBadgeText").textContent = t("footerBadge");
-  document.getElementById("langBtnLabel").textContent = LOCALES[I18n.current].flag;
+  document.getElementById("langBtnLabel").innerHTML = flagHtml(LOCALES[I18n.current].flag);
 
   const langMenu = document.getElementById("langMenu");
-  langMenu.innerHTML = `
-    <li class="lang-select__theme" id="langThemeToggle" role="option">
-      <span class="icon" id="langThemeIcon"></span>
-      <span id="langThemeLabel"></span>
-    </li>
-    ${Object.entries(LOCALES).map(([code, l]) => `
+  langMenu.innerHTML = Object.entries(LOCALES).map(([code, l]) => `
     <li role="option" data-lang="${code}" class="${code === I18n.current ? "active" : ""}">
-      <span class="lang-select__flag">${l.flag}</span>
+      <span class="lang-select__flag">${flagHtml(l.flag)}</span>
       <span class="lang-select__name">${escapeHtml(l.label)}</span>
       <span class="lang-select__hint">${escapeHtml(l.urlHint)}</span>
-    </li>`).join("")}`;
+    </li>`).join("");
   langMenu.querySelectorAll("li[data-lang]").forEach((li) => {
     li.addEventListener("click", () => {
       const code = li.dataset.lang;
@@ -1265,7 +1292,6 @@ function applyChrome() {
   });
 
   Theme.updateIcon();
-  document.getElementById("langThemeToggle").addEventListener("click", () => Theme.toggle());
 }
 
 function initChrome() {
@@ -1306,6 +1332,7 @@ function initChrome() {
   });
 
   applyChrome();
+  Theme.updateIcon();
   updateCartCount();
   updateHeaderOffset();
   window.addEventListener("resize", updateHeaderOffset);
