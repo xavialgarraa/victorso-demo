@@ -892,6 +892,7 @@ function renderAbout() {
   <section class="section about-page">
     <div class="container">
       <h1 class="section-title-lg">${t("aboutTitle")}</h1>
+      <p class="visit-text">${t("aboutLede")}</p>
     </div>
   </section>
 
