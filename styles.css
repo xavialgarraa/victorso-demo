@@ -138,6 +138,10 @@ h1, h2, h3, h4, .scrollhero__title, .section__head h2, .section-title-lg { font-
 .header__inner { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
 .logo { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; }
 .logo img { height: 34px; width: auto; display: block; flex-shrink: 0; }
+/* El PNG del logo trae el texto dibujado más abajo que el trazo del
+   check (que sube muy alto), así que centrarlo entero deja el texto
+   visualmente bajo respecto al buscador; se compensa desplazándolo. */
+.logo img.logo__full { transform: translateY(-7%); }
 .logo--footer img { height: 34px; width: auto; }
 .logo img.logo__compact { display: block; height: 30px; width: 36px; }
 .logo img.logo__full { display: none; }
