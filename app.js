@@ -1336,6 +1336,10 @@ function initChrome() {
   updateCartCount();
   updateHeaderOffset();
   window.addEventListener("resize", updateHeaderOffset);
+  // Las tipografías web (Space Grotesk/Inter) pueden cargar después de esta
+  // primera medición y cambiar ligeramente la altura del header; sin este
+  // recálculo el hueco reservado para el hero se queda desajustado.
+  if (document.fonts?.ready) document.fonts.ready.then(updateHeaderOffset);
 }
 
 initChrome();

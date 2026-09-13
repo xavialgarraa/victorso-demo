@@ -109,7 +109,8 @@ h1, h2, h3, h4, .scrollhero__title, .section__head h2, .section-title-lg { font-
 .topbar__ship { display: flex; align-items: center; gap: 7px; color: #f5c2c6; font-weight: 600; }
 .topbar__ship .icon { font-size: 1rem; }
 .topbar__ship strong { color: #fff; }
-.topbar__contact { display: flex; align-items: center; gap: 16px; }
+.topbar__contact { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; row-gap: 4px; }
+@media (max-width: 400px) { .topbar__contact { gap: 10px; } }
 .topbar__contact a { display: inline-flex; align-items: center; gap: 6px; opacity: .9; white-space: nowrap; }
 .topbar__contact a .icon { font-size: .95rem; }
 .topbar__contact a:hover { opacity: 1; color: #ff8b93; }
@@ -135,10 +136,10 @@ h1, h2, h3, h4, .scrollhero__title, .section__head h2, .section-title-lg { font-
 /* ---------- Header ---------- */
 .header { background: var(--header-bg); border-bottom: 1px solid rgba(255,255,255,.08); position: sticky; top: 0; z-index: 50; }
 .header__inner { display: flex; align-items: center; gap: 12px; padding: 12px 16px; }
-.logo { display: inline-flex; align-items: center; white-space: nowrap; }
-.logo img { height: 34px; width: auto; display: block; }
+.logo { display: inline-flex; align-items: center; white-space: nowrap; flex-shrink: 0; }
+.logo img { height: 34px; width: auto; display: block; flex-shrink: 0; }
 .logo--footer img { height: 34px; width: auto; }
-.logo img.logo__compact { display: block; height: 30px; }
+.logo img.logo__compact { display: block; height: 30px; width: 36px; }
 .logo img.logo__full { display: none; }
 @media (min-width: 640px) {
   .logo img.logo__compact { display: none; }
@@ -151,7 +152,8 @@ h1, h2, h3, h4, .scrollhero__title, .section__head h2, .section-title-lg { font-
 .burger.open span:nth-child(2) { opacity: 0; }
 .burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
-.search { display: flex; align-items: center; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); border-radius: 30px; padding: 6px 6px 6px 16px; flex: 1; max-width: 460px; transition: background .2s ease; }
+.search { display: flex; align-items: center; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); border-radius: 30px; padding: 6px 6px 6px 16px; flex: 1; min-width: 0; max-width: 460px; transition: background .2s ease; }
+.search input { min-width: 0; }
 .search:focus-within { background: rgba(255,255,255,.14); }
 .search input { flex: 1; border: none; background: none; outline: none; font-size: .9rem; color: #fff; }
 .search input::placeholder { color: rgba(255,255,255,.55); }
@@ -232,27 +234,26 @@ body.nav-open { overflow: hidden; }
 .scrollhero { position: relative; background: var(--header-bg); }
 .scrollhero__stage { position: sticky; top: var(--header-offset); height: calc(100vh - var(--header-offset)); height: calc(100svh - var(--header-offset)); min-height: 420px; overflow: hidden; display: flex; align-items: center; }
 .scrollhero__bg { position: absolute; inset: 0; }
-.scrollhero__bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; filter: brightness(.72) saturate(1.05); will-change: transform, opacity; transform-origin: 50% 50%; }
+.scrollhero__bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; filter: brightness(.85) saturate(1.15); will-change: transform, opacity; transform-origin: 50% 50%; }
 .scrollhero__bg img.active { opacity: 1; }
-.scrollhero__canvas { position: absolute; inset: 0; width: 100%; height: 100%; filter: brightness(.72) saturate(1.05); }
-.scrollhero__bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(10,10,12,.74) 0%, rgba(10,10,12,.32) 48%, rgba(227,6,19,.14) 100%); }
+.scrollhero__canvas { position: absolute; inset: 0; width: 100%; height: 100%; filter: brightness(.85) saturate(1.15); }
+.scrollhero__bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(10,10,12,.62) 0%, rgba(10,10,12,.2) 48%, rgba(227,6,19,.1) 100%); }
 .scrollhero__content { position: relative; z-index: 2; width: 100%; }
 .scrollhero__inner { max-width: var(--maxw); margin: 0 auto; position: relative; min-height: 210px; }
 @media (min-width: 640px) { .scrollhero__inner { min-height: 260px; } }
 @media (max-width: 639px) {
   /* En pantallas estrechas el texto ocupa casi todo el ancho, así que la
-     parte oscura del degradado tapaba casi toda la foto: se aclara un
-     poco y se sube el brillo de la imagen para que se aprecie mejor. */
-  .scrollhero__bg::after { background: linear-gradient(100deg, rgba(10,10,12,.6) 0%, rgba(10,10,12,.24) 55%, rgba(227,6,19,.12) 100%); }
-  .scrollhero__bg img, .scrollhero__canvas { filter: brightness(.82) saturate(1.05); }
-  .scrollhero__eyebrow, .scrollhero__title, .scrollhero__desc { text-shadow: 0 2px 12px rgba(0,0,0,.55); }
+     parte oscura del degradado tapaba casi toda la foto: se aclara aún
+     más que en escritorio para que se aprecie bien el fondo. */
+  .scrollhero__bg::after { background: linear-gradient(100deg, rgba(10,10,12,.52) 0%, rgba(10,10,12,.16) 55%, rgba(227,6,19,.08) 100%); }
+  .scrollhero__bg img, .scrollhero__canvas { filter: brightness(.92) saturate(1.15); }
 }
 .scrollhero__scene { position: absolute; inset: 0; max-width: 560px; display: flex; flex-direction: column; justify-content: center; pointer-events: none; padding: 0 16px; box-sizing: border-box; }
 @media (max-width: 639px) { .scrollhero__scene { padding: 0 30px; } }
 .scrollhero__scene.active { pointer-events: auto; }
-.scrollhero__eyebrow { display: inline-flex; align-items: center; gap: 8px; color: #ff8b93; font-weight: 700; letter-spacing: 1.2px; font-size: .66rem; text-transform: uppercase; opacity: 0; transform: translateY(14px); transition: opacity .5s var(--ease), transform .5s var(--ease); }
-.scrollhero__title { font-size: 1.5rem; line-height: 1.18; margin: 8px 0 10px; color: #fff; opacity: 0; transform: translateY(18px); transition: opacity .55s var(--ease) .05s, transform .55s var(--ease) .05s; }
-.scrollhero__desc { color: #e8e8ea; margin: 0 0 18px; max-width: 460px; font-size: .84rem; opacity: 0; transform: translateY(18px); transition: opacity .55s var(--ease) .1s, transform .55s var(--ease) .1s; }
+.scrollhero__eyebrow { display: inline-flex; align-items: center; gap: 8px; color: #ff8b93; font-weight: 700; letter-spacing: 1.2px; font-size: .66rem; text-transform: uppercase; text-shadow: 0 2px 10px rgba(0,0,0,.5); opacity: 0; transform: translateY(14px); transition: opacity .5s var(--ease), transform .5s var(--ease); }
+.scrollhero__title { font-size: 1.5rem; line-height: 1.18; margin: 8px 0 10px; color: #fff; text-shadow: 0 2px 14px rgba(0,0,0,.5); opacity: 0; transform: translateY(18px); transition: opacity .55s var(--ease) .05s, transform .55s var(--ease) .05s; }
+.scrollhero__desc { color: #e8e8ea; margin: 0 0 18px; max-width: 460px; font-size: .84rem; text-shadow: 0 1px 10px rgba(0,0,0,.5); opacity: 0; transform: translateY(18px); transition: opacity .55s var(--ease) .1s, transform .55s var(--ease) .1s; }
 .scrollhero__actions { display: flex; gap: 10px; flex-wrap: wrap; opacity: 0; transform: translateY(18px); transition: opacity .55s var(--ease) .15s, transform .55s var(--ease) .15s; }
 .scrollhero__actions .btn { padding: 10px 18px; font-size: .84rem; }
 @media (min-width: 640px) { .scrollhero__actions { gap: 12px; } .scrollhero__actions .btn { padding: 12px 22px; font-size: .92rem; } }
