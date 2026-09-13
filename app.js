@@ -174,6 +174,7 @@ const routes = [
   { pattern: /^\/checkout$/, render: renderCheckout },
   { pattern: /^\/search$/, render: (m, q) => renderSearch(q) },
   { pattern: /^\/quienes-somos$/, render: renderAbout },
+  { pattern: /^\/instalaciones$/, render: renderInstallations },
 ];
 
 let scrollHeroCleanup = null;
@@ -912,17 +913,7 @@ function renderAbout() {
     <div class="container">
       <div class="section__head"><h2>${t("aboutInstallTitle")}</h2></div>
       <p class="visit-text">${t("aboutInstallIntro")}</p>
-      <div class="install-grid">
-        ${INSTALLATIONS.map((ins) => `
-          <article class="install-card">
-            ${lazyImg(ins.image, ins.title)}
-            <div class="install-card__body">
-              <h3>${escapeHtml(ins.title)}</h3>
-              <div class="install-card__loc">${icon("pin")} ${escapeHtml(ins.location)}</div>
-              <p>${escapeHtml(ins.description)}</p>
-            </div>
-          </article>`).join("")}
-      </div>
+      <a class="btn btn--primary" href="#/instalaciones">${icon("arrowRight")} ${t("aboutInstallCta")}</a>
     </div>
   </section>
 
@@ -937,6 +928,37 @@ function renderAbout() {
     <div class="container">
       <div class="section__head"><h2>${t("sectionTestimonials")}</h2></div>
       ${testimonialsBlock()}
+    </div>
+  </section>
+  `;
+  mountLazyImages(APP);
+}
+
+function renderInstallations() {
+  const waHref = `https://wa.me/34600000000?text=${encodeURIComponent(t("installWaText"))}`;
+  APP.innerHTML = `
+  <div class="breadcrumb"><a href="#/">${t("breadcrumbHome")}</a> / ${t("navInstalaciones")}</div>
+  <section class="section">
+    <div class="container">
+      <h1 class="section-title-lg">${t("aboutInstallTitle")}</h1>
+      <p class="visit-text">${t("aboutInstallIntro")}</p>
+      <a class="btn btn--primary" href="${waHref}" target="_blank" rel="noopener">${icon("chat")} ${t("installCta")}</a>
+    </div>
+  </section>
+
+  <section class="section section--muted reveal">
+    <div class="container">
+      <div class="install-grid">
+        ${INSTALLATIONS.map((ins) => `
+          <article class="install-card">
+            ${lazyImg(ins.image, ins.title)}
+            <div class="install-card__body">
+              <h3>${escapeHtml(ins.title)}</h3>
+              <div class="install-card__loc">${icon("pin")} ${escapeHtml(ins.location)}</div>
+              <p>${escapeHtml(ins.description)}</p>
+            </div>
+          </article>`).join("")}
+      </div>
     </div>
   </section>
   `;
@@ -1184,6 +1206,7 @@ function applyChrome() {
   document.getElementById("footerLinkOutlet").textContent = t("navOutlet");
   document.getElementById("footerSupportTitle").textContent = t("footerSupport");
   document.getElementById("footerLinkAbout").textContent = t("navAbout");
+  document.getElementById("footerLinkInstall").textContent = t("navInstalaciones");
   document.getElementById("footerLinkShipping").textContent = t("footerShipping");
   document.getElementById("footerLinkReturns").textContent = t("footerReturns");
   document.getElementById("footerLinkFaq").textContent = t("footerFaq");
