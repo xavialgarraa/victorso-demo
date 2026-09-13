@@ -36,12 +36,11 @@ const CATEGORIES = [
   { slug: "outlet", title: "Outlet", icon: "tag", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/6/8/1200x1200_q100_png9_cr0_fix1/alphatheta-euphonia1.jpg" },
 ];
 
-/** Logos reales extraídos del catálogo público de victorso.com; Walkasse
- * no tiene logo propio publicado ahí, así que se muestra como texto. */
+/** Logos reales extraídos del catálogo público de victorso.com. */
 const BRANDS = [
   { name: "Pioneer DJ", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/165x83_q100_png9_cr0_fix1/pioneer-dj.png" },
   { name: "AlphaTheta", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosmarcas2/165x83_q100_png9_cr0_fix1/AlphaTheta_logo_Horizontal_k.jpg" },
-  { name: "Walkasse", logo: null },
+  { name: "Walkasse", logo: "assets/logo-walkasse.jpg" },
   { name: "RCF", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/logo_rcf.jpg" },
   { name: "Yamaha", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/285_Victorso.jpg" },
   { name: "QSC", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/qsc_logo.jpg" },
