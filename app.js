@@ -1295,6 +1295,15 @@ function applyChrome() {
 }
 
 function initChrome() {
+  // Si ya estás en el inicio, el navegador no dispara "hashchange" al
+  // clicar el logo (el hash no cambia), así que el router nunca se
+  // vuelve a ejecutar y la página se queda tal cual estaba scrolleada.
+  document.querySelector("a.logo")?.addEventListener("click", () => {
+    if (location.hash === "#/" || location.hash === "") {
+      window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+    }
+  });
+
   const burger = document.getElementById("burgerBtn");
   const nav = document.getElementById("mainNav");
   const overlay = document.getElementById("overlay");
