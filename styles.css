@@ -421,7 +421,7 @@ body.nav-open { overflow: hidden; }
 .pdp { padding: 16px; display: grid; gap: 26px; grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 900px) { .pdp { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); padding: 24px; align-items: start; } }
 
-.pdp__gallery-main { border-radius: var(--radius); overflow: hidden; background: var(--img-bg); aspect-ratio: 1/1; margin-bottom: 10px; position: relative; }
+.pdp__gallery-main { border-radius: var(--radius); overflow: hidden; background: var(--img-bg); aspect-ratio: 1/1; margin-bottom: 10px; position: relative; max-width: 420px; }
 .pdp__gallery-main img { width: 100%; height: 100%; object-fit: cover; }
 .pdp__thumbs { display: flex; gap: 8px; }
 .pdp__thumbs button { border: 2px solid var(--border); border-radius: 8px; overflow: hidden; width: 66px; height: 66px; padding: 0; background: var(--img-bg); }
