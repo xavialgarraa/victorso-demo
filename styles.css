@@ -141,7 +141,7 @@ h1, h2, h3, h4, .scrollhero__title, .section__head h2, .section-title-lg { font-
 /* El PNG del logo trae el texto dibujado más abajo que el trazo del
    check (que sube muy alto), así que centrarlo entero deja el texto
    visualmente bajo respecto al buscador; se compensa desplazándolo. */
-.logo img.logo__full { transform: translateY(-14%); }
+.logo img.logo__full { transform: translateY(-8%); }
 .logo--footer img { height: 34px; width: auto; }
 .logo img.logo__compact { display: block; height: 30px; width: 36px; }
 .logo img.logo__full { display: none; }
