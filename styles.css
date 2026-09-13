@@ -150,7 +150,7 @@ h1, h2, h3, h4, .scrollhero__title, .section__head h2, .section-title-lg { font-
   .logo img.logo__full { display: block; height: 54px; }
 }
 @media (min-width: 900px) {
-  .logo img.logo__full { height: 68px; }
+  .logo img.logo__full { height: 74px; }
 }
 
 .burger { display: flex; flex-direction: column; justify-content: center; gap: 4px; width: 34px; height: 34px; background: none; border: none; padding: 0; position: relative; z-index: 81; flex-shrink: 0; }
@@ -171,7 +171,7 @@ h1, h2, h3, h4, .scrollhero__title, .section__head h2, .section-title-lg { font-
 .header__right { display: contents; }
 @media (min-width: 900px) {
   .header__right { display: flex; align-items: center; gap: 18px; margin-left: auto; }
-  .header__right .search { flex: none; width: 280px; max-width: none; }
+  .header__right .search { flex: none; width: 330px; max-width: none; }
 }
 
 .header__actions { display: flex; align-items: center; gap: 14px; }
@@ -218,11 +218,11 @@ h1, h2, h3, h4, .scrollhero__title, .section__head h2, .section-title-lg { font-
   .burger { display: none; }
   .mainnav__utils { display: none; }
   .mainnav { display: flex !important; flex-direction: row; justify-content: center; position: static; top: auto; z-index: auto; padding: 0; animation: none; }
-  .mainnav.open a { padding: 12px 18px; font-size: inherit; font-weight: 500; }
-  .mainnav a { border-bottom: none; padding: 12px 18px; position: relative; transition: color .2s ease; }
-  .mainnav a::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 7px; height: 2px; background: var(--red); border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform .22s var(--ease); }
+  .mainnav.open a { padding: 8px 18px; font-size: inherit; font-weight: 500; }
+  .mainnav a { border-bottom: none; padding: 8px 18px; position: relative; transition: color .2s ease; }
+  .mainnav a::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 3px; height: 2px; background: var(--red); border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform .22s var(--ease); }
   .mainnav a:hover::after { transform: scaleX(1); }
-  .header__inner { padding: 14px 24px; }
+  .header__inner { padding: 10px 24px; }
 }
 
 body.nav-open { overflow: hidden; }
