@@ -232,7 +232,7 @@ body.nav-open { overflow: hidden; }
 
 /* ---------- Scroll hero (escenas fijas) ---------- */
 .scrollhero { position: relative; background: var(--header-bg); }
-.scrollhero__stage { position: sticky; top: var(--header-offset); height: calc(100vh - var(--header-offset)); height: calc(100svh - var(--header-offset)); min-height: 420px; overflow: hidden; display: flex; align-items: center; }
+.scrollhero__stage { position: sticky; top: var(--header-offset); height: calc(100vh - var(--header-offset)); height: calc(100svh - var(--header-offset)); height: calc(100dvh - var(--header-offset)); min-height: 420px; overflow: hidden; display: flex; align-items: center; }
 .scrollhero__bg { position: absolute; inset: 0; }
 .scrollhero__bg img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; filter: brightness(.85) saturate(1.15); will-change: transform, opacity; transform-origin: 50% 50%; }
 .scrollhero__bg img.active { opacity: 1; }
