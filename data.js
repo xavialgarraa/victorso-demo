@@ -444,3 +444,14 @@ const TESTIMONIALS = [
   { author: "Cristina Boix", role: "Técnica de sonido freelance", text: "Envíos rápidos y equipos siempre originales con garantía. Mi tienda de confianza para giras.", rating: 5 },
   { author: "Marc Oliveras", role: "Productor musical", text: "El material de estudio que venden es de primer nivel y los precios muy competitivos.", rating: 4 },
 ];
+
+/** Proyectos de instalación realizados (servicio técnico, no venta online).
+ * Añadir más simplemente empujando un objeto nuevo a este array. */
+const INSTALLATIONS = [
+  {
+    title: "Sonorización del Paseo Marítimo de Lloret de Mar",
+    location: "Lloret de Mar (Girona)",
+    image: "assets/instalacion-paseo-maritimo.jpeg",
+    description: "Megafonía integrada en el propio alumbrado público: altavoces instalados en las farolas a lo largo de todo el paseo marítimo, con cobertura sonora uniforme de punta a punta. El ayuntamiento la usa para avisos municipales, música ambiente y la locución/sonido de eventos como el Drone Festival, garantizando una escucha nítida en toda la longitud del paseo sin puntos ciegos.",
+  },
+];

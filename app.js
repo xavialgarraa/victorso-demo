@@ -910,6 +910,24 @@ function renderAbout() {
 
   <section class="section section--muted reveal">
     <div class="container">
+      <div class="section__head"><h2>${t("aboutInstallTitle")}</h2></div>
+      <p class="visit-text">${t("aboutInstallIntro")}</p>
+      <div class="install-grid">
+        ${INSTALLATIONS.map((ins) => `
+          <article class="install-card">
+            ${lazyImg(ins.image, ins.title)}
+            <div class="install-card__body">
+              <h3>${escapeHtml(ins.title)}</h3>
+              <div class="install-card__loc">${icon("pin")} ${escapeHtml(ins.location)}</div>
+              <p>${escapeHtml(ins.description)}</p>
+            </div>
+          </article>`).join("")}
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="container">
       <div class="section__head"><h2>${t("aboutBrands")}</h2></div>
       ${brandStrip()}
     </div>
