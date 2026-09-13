@@ -945,7 +945,7 @@ function renderAbout() {
 }
 
 function renderInstallations() {
-  const waHref = `https://wa.me/34600000000?text=${encodeURIComponent(t("installWaText"))}`;
+  const waHref = `https://wa.me/34619406443?text=${encodeURIComponent(t("installWaText"))}`;
   APP.innerHTML = `
   <div class="breadcrumb"><a href="#/">${t("breadcrumbHome")}</a> / ${t("navInstalaciones")}</div>
   <section class="section">
@@ -1270,6 +1270,7 @@ function applyChrome() {
   document.getElementById("footerLinkContact").textContent = t("footerContactLink");
   document.getElementById("footerContactTitle").textContent = t("footerContact");
   document.getElementById("footerRightsText").textContent = `© 2026 Victor So Professional. ${t("footerRights")}`;
+  document.getElementById("footerHoursText").textContent = t("footerHours");
   document.getElementById("footerBadgeText").textContent = t("footerBadge");
   document.getElementById("langBtnLabel").innerHTML = flagHtml(LOCALES[I18n.current].flag);
 

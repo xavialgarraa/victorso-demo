@@ -536,6 +536,7 @@ body.nav-open { overflow: hidden; }
 .footer__col a:hover { color: var(--red); }
 .footer__col a .icon { font-size: 1rem; opacity: .8; }
 .footer__col p { font-size: .82rem; line-height: 1.5; color: #999; }
+.footer__hours { margin-top: 10px; }
 .footer__social { display: flex; gap: 12px; margin-top: 12px; }
 .footer__social a { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,.08); font-size: 1.05rem; }
 .footer__social a:hover { background: var(--red); color: #fff; }
