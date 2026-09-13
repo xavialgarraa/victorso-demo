@@ -556,6 +556,8 @@ body.nav-open { overflow: hidden; }
 .install-card__loc { display: flex; align-items: center; gap: 6px; color: var(--red); font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .3px; margin-bottom: 10px; }
 .install-card__loc .icon { font-size: .95rem; }
 .install-card__body p { color: var(--text-muted); font-size: .88rem; line-height: 1.6; margin: 0; }
+.tiktok-embed-wrap { display: flex; justify-content: center; }
+.tiktok-embed-wrap blockquote.tiktok-embed { margin: 0; }
 
 /* ---------- Floating WhatsApp ---------- */
 .whatsapp-float { position: fixed; bottom: 20px; right: 20px; width: 54px; height: 54px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-lg); z-index: 90; transition: transform .2s var(--ease); }

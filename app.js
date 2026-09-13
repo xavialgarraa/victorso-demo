@@ -961,8 +961,33 @@ function renderInstallations() {
       </div>
     </div>
   </section>
+
+  <section class="section reveal">
+    <div class="container">
+      <div class="section__head"><h2>${t("installTiktokTitle")}</h2></div>
+      <div class="tiktok-embed-wrap">
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@emilio.victorso" data-unique-id="emilio.victorso" data-embed-type="creator" style="max-width:780px;min-width:288px;">
+          <section></section>
+        </blockquote>
+      </div>
+    </div>
+  </section>
   `;
   mountLazyImages(APP);
+  loadTiktokEmbed();
+}
+
+/** El script de embed de TikTok solo procesa los <blockquote> presentes
+ * en el DOM cuando se ejecuta; como esta es una SPA que reinyecta HTML,
+ * hay que quitar y volver a añadir el script cada vez para forzar que
+ * vuelva a escanear y renderice el feed (siempre el contenido más reciente). */
+function loadTiktokEmbed() {
+  document.getElementById("tiktok-embed-script")?.remove();
+  const s = document.createElement("script");
+  s.id = "tiktok-embed-script";
+  s.async = true;
+  s.src = "https://www.tiktok.com/embed.js";
+  document.body.appendChild(s);
 }
 
 /* ---------------------------------------------------------------------- */
