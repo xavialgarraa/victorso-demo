@@ -446,13 +446,13 @@ body.nav-open { overflow: hidden; }
 .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
 
 /* ---------- Brands ticker ---------- */
-.ticker { position: relative; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.ticker { position: relative; overflow: hidden; padding: 14px 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
 .ticker__track { display: flex; align-items: center; gap: 16px; width: max-content; animation: ticker-scroll 28s linear infinite; }
 .ticker:hover .ticker__track { animation-play-state: paused; }
-.ticker__pill { flex-shrink: 0; padding: 10px 22px; background: var(--surface); border: 1px solid var(--border); border-radius: 30px; font-weight: 700; font-size: .85rem; color: var(--text-muted); transition: transform .2s var(--ease), border-color .2s ease, color .2s ease; }
-.ticker__pill:hover { transform: translateY(-3px) scale(1.04); border-color: var(--red); color: var(--red); }
+.ticker__pill { flex-shrink: 0; padding: 10px 22px; background: var(--surface); border: 1px solid var(--border); border-radius: 30px; font-weight: 700; font-size: .85rem; color: var(--text-muted); transition: transform .2s var(--ease), border-color .2s ease, color .2s ease, box-shadow .2s ease; }
+.ticker__pill:hover { transform: translateY(-4px) scale(1.05); border-color: var(--red); color: var(--red); box-shadow: 0 10px 18px rgba(0,0,0,.18); }
 .ticker__logo { display: flex; align-items: center; justify-content: center; padding: 12px 28px; background: #fff; border: 1px solid var(--border); border-radius: 12px; height: 68px; box-sizing: border-box; transition: transform .2s var(--ease), box-shadow .2s var(--ease); }
-.ticker__logo:hover { transform: translateY(-3px) scale(1.04); box-shadow: var(--shadow-lg); }
+.ticker__logo:hover { transform: translateY(-4px) scale(1.06); box-shadow: 0 12px 22px rgba(0,0,0,.22); }
 .ticker__logo img { height: 100%; width: auto; max-width: 150px; object-fit: contain; }
 @keyframes ticker-scroll {
   from { transform: translateX(0); }
@@ -473,7 +473,8 @@ body.nav-open { overflow: hidden; }
 .testi__role { font-size: .75rem; color: var(--text-soft); }
 
 /* ---------- Breadcrumb ---------- */
-.breadcrumb { font-size: .8rem; color: var(--text-soft); padding: 14px 16px 0; }
+.breadcrumb { max-width: var(--maxw); margin: 0 auto; box-sizing: border-box; font-size: .8rem; color: var(--text-soft); padding: 16px 16px 0; }
+.breadcrumb a { color: var(--text-muted); }
 .breadcrumb a:hover { color: var(--red); }
 
 /* ---------- Product page ---------- */
