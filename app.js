@@ -283,52 +283,73 @@ function testimonialsBlock() {
  * la zona de interés de cada plano (cabina, escenario, mesa) y no hacia
  * las zonas oscuras del centro.
  */
-function storeHeroMarkup() {
-  const offers = [...PRODUCTS]
-    .filter((p) => p.compareAtPrice && p.compareAtPrice > p.price)
-    .sort((a, b) => (1 - b.price / b.compareAtPrice) - (1 - a.price / a.compareAtPrice))
-    .slice(0, 2);
-  const fresh = PRODUCTS.find((p) => p.isNew) || PRODUCTS[0];
+function slidePanelMarkup(id, slides) {
+  return `
+  <div class="storehero__panel">
+    <div class="storehero__track" id="${id}Track">
+      ${slides.map((s, i) => `
+        <a class="storehero__slide ${i === 0 ? "active" : ""}" href="${s.href}" style="background-image:url('${s.image}')">
+          <span class="storehero__badge ${s.badgeCls}">${s.badge}</span>
+          <div class="storehero__info">
+            <div class="storehero__eyebrow">${escapeHtml(s.eyebrow)}</div>
+            <h2 class="storehero__title">${escapeHtml(s.title)}</h2>
+            ${s.priceHtml || ""}
+            <span class="btn ${s.ctaCls}">${s.cta}</span>
+          </div>
+        </a>`).join("")}
+    </div>
+    <div class="storehero__dots" id="${id}Dots">
+      ${slides.map((_, i) => `<button class="storehero__dot ${i === 0 ? "active" : ""}" data-i="${i}" aria-label="${i + 1}"></button>`).join("")}
+    </div>
+  </div>`;
+}
 
-  const slides = [
-    ...offers.map((offer) => {
-      const pct = Math.round((1 - offer.price / offer.compareAtPrice) * 100);
-      return {
-        href: `#/product/${offer.handle}`, image: offer.images[0],
-        badge: t("storeHeroOfferBadge", pct), badgeCls: "storehero__badge--offer",
-        eyebrow: offer.vendor, title: offer.title,
-        priceHtml: `<div class="storehero__price"><span class="now">${euros(offer.price)}</span><span class="was">${euros(offer.compareAtPrice)}</span></div>`,
-        cta: t("storeHeroOfferCta"), ctaCls: "btn--primary",
-      };
-    }),
+function storeHeroMarkup() {
+  const newArrivals = PRODUCTS.filter((p) => p.isNew);
+  const bestseller = [...PRODUCTS].sort((a, b) => b.reviewsCount - a.reviewsCount)[0];
+  const topBrand = BRANDS[0];
+  const brandProduct = PRODUCTS.find((p) => p.vendor === topBrand.name) || PRODUCTS[0];
+
+  const leftSlides = newArrivals.map((p) => ({
+    href: `#/product/${p.handle}`, image: p.images[0],
+    badge: t("storeHeroNewBadge"), badgeCls: "storehero__badge--new",
+    eyebrow: p.vendor, title: p.title, priceHtml: "",
+    cta: t("storeHeroNewCta"), ctaCls: "btn--outline",
+  }));
+
+  const rightSlides = [
     {
-      href: `#/product/${fresh.handle}`, image: fresh.images[0],
-      badge: t("storeHeroNewBadge"), badgeCls: "storehero__badge--new",
-      eyebrow: fresh.vendor, title: fresh.title, priceHtml: "",
-      cta: t("storeHeroNewCta"), ctaCls: "btn--outline",
+      href: `#/product/${bestseller.handle}`, image: bestseller.images[0],
+      badge: t("storeHeroBestsellerBadge"), badgeCls: "storehero__badge--offer",
+      eyebrow: bestseller.vendor, title: bestseller.title,
+      priceHtml: `<div class="storehero__price"><span class="now">${euros(bestseller.price)}</span></div>`,
+      cta: t("storeHeroBestsellerCta"), ctaCls: "btn--primary",
+    },
+    {
+      href: "https://wa.me/34619406443", image: "assets/tienda-fachada.jpeg",
+      badge: t("storeHeroContactBadge"), badgeCls: "storehero__badge--brand",
+      eyebrow: "972 364 114", title: t("storeHeroContactTitle"), priceHtml: "",
+      cta: t("storeHeroContactCta"), ctaCls: "btn--outline",
+    },
+    {
+      href: "#/quienes-somos", image: "assets/tienda-fachada.jpeg",
+      badge: t("storeHeroVisitBadge"), badgeCls: "storehero__badge--brand",
+      eyebrow: t("storeHeroVisitEyebrow"), title: t("storeHeroVisitTitle"), priceHtml: "",
+      cta: t("storeHeroVisitCta"), ctaCls: "btn--outline",
+    },
+    {
+      href: `#/brand/${topBrand.slug}`, image: brandProduct.images[0],
+      badge: t("storeHeroBrandBadge"), badgeCls: "storehero__badge--brand",
+      eyebrow: t("storeHeroBrandEyebrow"), title: topBrand.name, priceHtml: "",
+      cta: t("storeHeroBrandCta"), ctaCls: "btn--outline",
     },
   ];
 
   return `
   <section class="storehero">
-    <div class="storehero__viewport">
-      <div class="storehero__track" id="storeHeroTrack">
-        ${slides.map((s, i) => `
-          <a class="storehero__slide ${i === 0 ? "active" : ""}" href="${s.href}" style="background-image:url('${s.image}')">
-            <span class="storehero__badge ${s.badgeCls}">${s.badge}</span>
-            <div class="storehero__info">
-              <div class="storehero__eyebrow">${escapeHtml(s.eyebrow)}</div>
-              <h2 class="storehero__title">${escapeHtml(s.title)}</h2>
-              ${s.priceHtml}
-              <span class="btn ${s.ctaCls}">${s.cta}</span>
-            </div>
-          </a>`).join("")}
-      </div>
-      <button class="storehero__arrow storehero__arrow--prev" id="storeHeroPrev" aria-label="${t("carouselPrev")}">${icon("arrowRight")}</button>
-      <button class="storehero__arrow storehero__arrow--next" id="storeHeroNext" aria-label="${t("carouselNext")}">${icon("arrowRight")}</button>
-      <div class="storehero__dots" id="storeHeroDots">
-        ${slides.map((_, i) => `<button class="storehero__dot ${i === 0 ? "active" : ""}" data-i="${i}" aria-label="${i + 1}"></button>`).join("")}
-      </div>
+    <div class="storehero__grid">
+      ${slidePanelMarkup("storeHeroLeft", leftSlides)}
+      ${slidePanelMarkup("storeHeroRight", rightSlides)}
     </div>
     <div class="storehero__brands">
       <span class="storehero__brandsLabel">${t("sectionBrands")}</span>
@@ -337,11 +358,11 @@ function storeHeroMarkup() {
   </section>`;
 }
 
-function initStoreHero() {
-  const track = document.getElementById("storeHeroTrack");
+function initSlidePanel(id, intervalMs) {
+  const track = document.getElementById(`${id}Track`);
   if (!track) return;
   const slides = [...track.children];
-  const dots = [...document.querySelectorAll("#storeHeroDots .storehero__dot")];
+  const dots = [...document.querySelectorAll(`#${id}Dots .storehero__dot`)];
   let idx = 0;
   let timer = null;
 
@@ -352,23 +373,25 @@ function initStoreHero() {
     dots.forEach((d, j) => d.classList.toggle("active", j === idx));
   }
   function next() { show(idx + 1); }
-  function prev() { show(idx - 1); }
   function restart() {
     if (timer) clearInterval(timer);
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      timer = setInterval(next, 5500);
+      timer = setInterval(next, intervalMs);
     }
   }
 
-  document.getElementById("storeHeroNext").addEventListener("click", () => { next(); restart(); });
-  document.getElementById("storeHeroPrev").addEventListener("click", () => { prev(); restart(); });
   dots.forEach((d) => d.addEventListener("click", () => { show(Number(d.dataset.i)); restart(); }));
-  const viewport = track.parentElement;
-  viewport.addEventListener("mouseenter", () => { if (timer) clearInterval(timer); });
-  viewport.addEventListener("mouseleave", restart);
+  const panel = track.parentElement;
+  panel.addEventListener("mouseenter", () => { if (timer) clearInterval(timer); });
+  panel.addEventListener("mouseleave", restart);
 
   show(0);
   restart();
+}
+
+function initStoreHero() {
+  initSlidePanel("storeHeroLeft", 6000);
+  initSlidePanel("storeHeroRight", 6000);
 }
 
 function renderHome() {
@@ -377,8 +400,6 @@ function renderHome() {
 
   APP.innerHTML = `
   ${storeHeroMarkup()}
-
-  <div class="shipband">${icon("truck")}<span>${t("shipBanner")}</span></div>
 
   <section class="section reveal">
     <div class="container">
@@ -393,6 +414,8 @@ function renderHome() {
       </div>
     </div>
   </section>
+
+  <div class="shipband">${icon("truck")}<span>${t("shipBanner")}</span></div>
 
   <section class="section section--muted reveal">
     <div class="container">

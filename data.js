@@ -116,7 +116,7 @@ const RAW_PRODUCTS = [
   },
   {
     id: "xdj-rx3", handle: "pioneer-dj-xdj-rx3", title: "Pioneer DJ XDJ-RX3 Controlador Standalone",
-    vendor: "Pioneer DJ", category: "dj", price: 1799, compareAtPrice: null,
+    vendor: "Pioneer DJ", category: "dj", price: 1799, compareAtPrice: null, isNew: true,
     tags: ["dj", "controlador", "Pioneer DJ"],
     images: ["https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/4/6/1200x1200_q100_png9_cr0_fix1/OPUS-QUAD_prm_top_230130.jpg", "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/4/6/1200x1200_q100_png9_cr0_fix1/OPUS-QUAD_prm_top_230130.jpg"],
     optionName: "Formato", options: [{ title: "Unidad individual" }],
@@ -132,7 +132,7 @@ const RAW_PRODUCTS = [
   },
   {
     id: "wego4", handle: "alphatheta-wego4", title: "AlphaTheta WeGO4 Altavoz Portátil DJ",
-    vendor: "AlphaTheta", category: "dj", price: 449, compareAtPrice: null,
+    vendor: "AlphaTheta", category: "dj", price: 449, compareAtPrice: null, isNew: true,
     tags: ["dj", "altavoz-portatil", "AlphaTheta"],
     images: ["https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/6/7/1200x1200_q100_png9_cr0_fix1/alphatheta-wave-eight.jpg", "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/6/7/1200x1200_q100_png9_cr0_fix1/alphatheta-wave-eight.jpg"],
     optionName: "Color",
