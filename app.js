@@ -401,6 +401,33 @@ function initSlidePanel(id, intervalMs) {
   panel.addEventListener("mouseenter", () => { if (timer) clearInterval(timer); });
   panel.addEventListener("mouseleave", restart);
 
+  // Swipe táctil: arrastrar el dedo cambia de slide; si hubo arrastre real
+  // se cancela el click siguiente para que no navegue al enlace de la slide.
+  let touchStartX = 0, touchCurrentX = 0, touching = false, swiped = false;
+  track.addEventListener("touchstart", (e) => {
+    touchStartX = touchCurrentX = e.touches[0].clientX;
+    touching = true;
+    swiped = false;
+    if (timer) clearInterval(timer);
+  }, { passive: true });
+  track.addEventListener("touchmove", (e) => {
+    if (!touching) return;
+    touchCurrentX = e.touches[0].clientX;
+  }, { passive: true });
+  track.addEventListener("touchend", () => {
+    if (!touching) return;
+    touching = false;
+    const delta = touchCurrentX - touchStartX;
+    if (Math.abs(delta) > 40) {
+      swiped = true;
+      show(idx + (delta < 0 ? 1 : -1));
+    }
+    restart();
+  });
+  track.addEventListener("click", (e) => {
+    if (swiped) { e.preventDefault(); swiped = false; }
+  }, true);
+
   show(0);
   restart();
 }
