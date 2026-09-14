@@ -117,6 +117,8 @@ const Theme = {
     const navLabel = document.getElementById("mainnavThemeLabel");
     if (navIcon) navIcon.innerHTML = iconHtml;
     if (navLabel) navLabel.textContent = label;
+    const favicon = document.getElementById("favicon");
+    if (favicon) favicon.href = dark ? "assets/favicon-dark.png" : "assets/favicon-light.png";
   },
 };
 
