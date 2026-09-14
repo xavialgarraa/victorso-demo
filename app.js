@@ -352,7 +352,10 @@ function storeHeroMarkup() {
       ${slidePanelMarkup("storeHeroRight", rightSlides)}
     </div>
     <div class="storehero__ctaWrap">
-      <a class="storehero__ctaBtn" href="#/search">${icon("search")} ${t("storeHeroCtaBtn")}</a>
+      <a class="storehero__ctaBtn" href="#/search">
+        <span class="storehero__ctaBtn-text">${t("storeHeroCtaBtn")}</span>
+        <span class="storehero__ctaBtn-arrow">${icon("arrowRight")}</span>
+      </a>
     </div>
     <div class="storehero__brands">
       <span class="storehero__brandsLabel">${t("sectionBrands")}</span>

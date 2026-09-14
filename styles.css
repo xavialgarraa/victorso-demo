@@ -304,9 +304,13 @@ body.nav-open { overflow: hidden; }
 .storehero__info .btn { align-self: flex-start; padding: 10px 20px; font-size: .84rem; }
 .storehero__info .btn--outline { background: transparent; border-color: rgba(255,255,255,.55); color: #fff; }
 .storehero__info .btn--outline:hover { background: #fff; color: #111; border-color: #fff; }
-.storehero__dots { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 3; display: flex; gap: 8px; }
-.storehero__dot { width: 8px; height: 8px; border-radius: 50%; border: none; background: rgba(255,255,255,.4); transition: background .2s ease, transform .2s ease; }
-.storehero__dot.active { background: #fff; transform: scale(1.25); }
+.storehero__dots { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 3; display: flex; align-items: center; gap: 5px; transition: opacity .25s ease; }
+.storehero__dot { width: 5px; height: 5px; border-radius: 3px; border: none; background: rgba(255,255,255,.55); transition: background .2s ease, width .25s var(--ease); }
+.storehero__dot.active { width: 15px; background: #fff; }
+@media (hover: hover) {
+  .storehero__dots { opacity: 0; }
+  .storehero__panel:hover .storehero__dots, .storehero__panel:focus-within .storehero__dots { opacity: 1; }
+}
 @media (min-width: 640px) {
   .storehero__slide { min-height: 320px; }
   .storehero__title { font-size: 1.6rem; }
@@ -315,15 +319,30 @@ body.nav-open { overflow: hidden; }
 @media (min-width: 900px) { .storehero__slide { min-height: 400px; } }
 @media (prefers-reduced-motion: reduce) { .storehero__track { transition: none; } }
 
-.storehero__ctaWrap { display: flex; justify-content: center; margin: 18px 0 0; }
-.storehero__ctaBtn { display: inline-flex; align-items: center; gap: 9px; padding: 13px 26px; border-radius: 30px; background: var(--red); color: #fff; font-weight: 700; font-size: .92rem; text-decoration: none; box-shadow: 0 0 0 0 rgba(227,6,19,.5); animation: storehero-pulse 2.6s ease-out infinite; transition: transform .18s var(--ease); }
-.storehero__ctaBtn:hover { transform: translateY(-2px); animation-play-state: paused; }
-@keyframes storehero-pulse {
-  0% { box-shadow: 0 0 0 0 rgba(227,6,19,.45); }
-  70% { box-shadow: 0 0 0 12px rgba(227,6,19,0); }
-  100% { box-shadow: 0 0 0 0 rgba(227,6,19,0); }
+.storehero__ctaWrap { display: flex; justify-content: center; margin: 20px 0 0; }
+.storehero__ctaBtn {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 16px;
+  padding: 7px 7px 7px 26px;
+  border-radius: 40px;
+  background: linear-gradient(135deg, #ff3f47, var(--red-dark));
+  color: #fff; font-weight: 700; font-size: .92rem; letter-spacing: .1px;
+  text-decoration: none; overflow: hidden;
+  box-shadow: 0 10px 26px rgba(227,6,19,.35);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease);
 }
-@media (prefers-reduced-motion: reduce) { .storehero__ctaBtn { animation: none; } }
+.storehero__ctaBtn::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.35) 50%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform .7s var(--ease);
+}
+.storehero__ctaBtn:hover { transform: translateY(-3px); box-shadow: 0 16px 34px rgba(227,6,19,.48); }
+.storehero__ctaBtn:hover::before { transform: translateX(120%); }
+.storehero__ctaBtn-arrow { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,.2); flex-shrink: 0; transition: transform .3s var(--ease), background .2s ease; }
+.storehero__ctaBtn:hover .storehero__ctaBtn-arrow { transform: translateX(3px); background: rgba(255,255,255,.32); }
+.storehero__ctaBtn-text { position: relative; z-index: 1; }
+@media (prefers-reduced-motion: reduce) { .storehero__ctaBtn, .storehero__ctaBtn::before, .storehero__ctaBtn-arrow { transition: none; } }
 
 .storehero__brands { width: 100%; margin: 18px 0 0; }
 .storehero__brandsLabel { display: block; text-align: center; color: var(--text-soft); font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 10px; }
