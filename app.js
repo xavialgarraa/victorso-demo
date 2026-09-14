@@ -108,14 +108,20 @@ const Theme = {
     this.updateIcon();
   },
   updateIcon() {
-    const iconHtml = this.effective() === "dark" ? ICONS.sun : ICONS.moon;
-    const label = this.effective() === "dark" ? t("themeLight") : t("themeDark");
+    const dark = this.effective() === "dark";
+    const iconHtml = dark ? ICONS.sun : ICONS.moon;
+    const label = dark ? t("themeLight") : t("themeDark");
     const el = document.getElementById("themeIcon");
     if (el) el.innerHTML = iconHtml;
     const navIcon = document.getElementById("mainnavThemeIcon");
     const navLabel = document.getElementById("mainnavThemeLabel");
     if (navIcon) navIcon.innerHTML = iconHtml;
     if (navLabel) navLabel.textContent = label;
+    const logo = document.querySelector(".header .logo__full");
+    if (logo) {
+      const src = dark ? logo.dataset.srcDark : logo.dataset.srcLight;
+      if (src && logo.src !== src) logo.src = src;
+    }
   },
 };
 
