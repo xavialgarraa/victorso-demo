@@ -60,11 +60,12 @@
     </a>
 
     <div class="header__right">
-      <form class="search" id="searchForm" role="search">
+      <form class="search" id="searchForm" role="search" autocomplete="off">
         <input type="search" id="searchInput" placeholder="Buscar productos, marcas..." aria-label="Buscar">
         <button type="submit" aria-label="Buscar">
           <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="M20 20l-4.8-4.8"></path></svg></span>
         </button>
+        <div class="search-suggest" id="searchSuggest"></div>
       </form>
 
       <nav class="header__actions">

@@ -1346,7 +1346,34 @@ function initChrome() {
   document.getElementById("searchForm").addEventListener("submit", (e) => {
     e.preventDefault();
     const q = document.getElementById("searchInput").value.trim();
+    searchSuggest.classList.remove("open");
     location.hash = `#/search?q=${encodeURIComponent(q)}`;
+  });
+
+  const searchInputEl = document.getElementById("searchInput");
+  const searchSuggest = document.getElementById("searchSuggest");
+  const renderSearchSuggest = () => {
+    const term = searchInputEl.value.trim().toLowerCase();
+    if (!term) { searchSuggest.classList.remove("open"); searchSuggest.innerHTML = ""; return; }
+    const matches = PRODUCTS.filter((p) =>
+      (p.title + " " + p.vendor + " " + p.tags.join(" ")).toLowerCase().includes(term)
+    ).slice(0, 6);
+    searchSuggest.innerHTML = (matches.length
+      ? matches.map((p) => `
+        <a class="search-suggest__item" href="#/product/${p.handle}">
+          <img src="${p.images[0]}" alt="">
+          <span class="search-suggest__title">${escapeHtml(p.title)}</span>
+          <span class="search-suggest__price">${euros(p.price)}</span>
+        </a>`).join("")
+      : `<div class="search-suggest__empty">${t("searchNoMatches")}</div>`)
+      + `<a class="search-suggest__all" href="#/search?q=${encodeURIComponent(term)}">${t("searchSeeAll")}</a>`;
+    searchSuggest.classList.add("open");
+  };
+  searchInputEl.addEventListener("input", renderSearchSuggest);
+  searchInputEl.addEventListener("focus", () => { if (searchInputEl.value.trim()) renderSearchSuggest(); });
+  searchSuggest.addEventListener("click", () => searchSuggest.classList.remove("open"));
+  document.addEventListener("click", (e) => {
+    if (!document.getElementById("searchForm").contains(e.target)) searchSuggest.classList.remove("open");
   });
 
   applyChrome();
