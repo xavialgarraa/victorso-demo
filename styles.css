@@ -289,8 +289,8 @@ body.nav-open { overflow: hidden; }
    scroll (ni se corta a media franja, ni se ve ya la siguiente sección). */
 .storehero {
   position: relative;
-  display: flex; flex-direction: column; justify-content: space-between;
-  box-sizing: border-box; padding: 12px 0; gap: 10px;
+  display: flex; flex-direction: column; justify-content: center;
+  box-sizing: border-box; padding: 12px 0; gap: 22px;
   min-height: calc(100vh - var(--topchrome-offset, 140px));
   min-height: calc(100svh - var(--topchrome-offset, 140px));
   max-height: 820px;
