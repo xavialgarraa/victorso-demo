@@ -30,15 +30,24 @@ const CATEGORIES = [
 
 /** Logos reales extraídos del catálogo público de victorso.com. */
 const BRANDS = [
-  { name: "Pioneer DJ", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/165x83_q100_png9_cr0_fix1/pioneer-dj.png" },
-  { name: "AlphaTheta", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosmarcas2/165x83_q100_png9_cr0_fix1/AlphaTheta_logo_Horizontal_k.jpg" },
-  { name: "Walkasse", logo: "assets/logo-walkasse.jpg" },
-  { name: "RCF", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/logo_rcf.jpg" },
-  { name: "Yamaha", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/285_Victorso.jpg" },
-  { name: "QSC", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/qsc_logo.jpg" },
-  { name: "Rode", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/rode_logo.png" },
-  { name: "Focusrite", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/focusrite_logo.jpg" },
-  { name: "Sennheiser", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosmarcas2/165x83_q100_png9_cr0_fix1/senheiser.png" },
+  { name: "Pioneer DJ", slug: "pioneer-dj", website: "https://www.pioneerdj.com", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/165x83_q100_png9_cr0_fix1/pioneer-dj.png",
+    description: "El estándar mundial en cabinas de DJ profesionales. Pioneer DJ equipa las salas y festivales más importantes del planeta, y es la marca en la que más confiamos en Victor So Professional." },
+  { name: "AlphaTheta", slug: "alphatheta", website: "https://www.alphatheta.com", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosmarcas2/165x83_q100_png9_cr0_fix1/AlphaTheta_logo_Horizontal_k.jpg",
+    description: "La nueva marca del grupo Pioneer DJ / TAG Sound, enfocada en innovación para DJs: sistemas todo en uno, monitores de estudio y equipos portátiles de última generación." },
+  { name: "Walkasse", slug: "walkasse", website: "https://www.walkasse.com", logo: "assets/logo-walkasse.jpg",
+    description: "Fabricante especializado en flight-cases y bolsas de transporte a medida, pensados para proteger equipos de sonido e iluminación en giras y eventos." },
+  { name: "RCF", slug: "rcf", website: "https://www.rcf.it", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/logo_rcf.jpg",
+    description: "Fabricante italiano con más de 70 años de historia en sonido profesional, presente en salas de conciertos, teatros y eventos en directo de todo el mundo." },
+  { name: "Yamaha", slug: "yamaha", website: "https://www.yamaha.com", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/285_Victorso.jpg",
+    description: "Uno de los grandes nombres de la electrónica musical, con altavoces y equipos de sonido conocidos por su fiabilidad y calidad de fabricación." },
+  { name: "QSC", slug: "qsc", website: "https://www.qsc.com", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/qsc_logo.jpg",
+    description: "Marca americana referente en altavoces activos y sistemas de sonido para instalaciones fijas, salas de conciertos y giras profesionales." },
+  { name: "Rode", slug: "rode", website: "https://www.rode.com", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/rode_logo.png",
+    description: "Fabricante australiano de micrófonos de estudio y grabación, muy valorado por creadores de contenido y estudios por su calidad de sonido y precio." },
+  { name: "Focusrite", slug: "focusrite", website: "https://focusrite.com", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosMarcas/165x83_q100_png9_cr0_fix1/focusrite_logo.jpg",
+    description: "Interfaces de audio de referencia para producción musical en casa y en estudio, con la gama Scarlett como estándar de entrada al mundo profesional." },
+  { name: "Sennheiser", slug: "sennheiser", website: "https://www.sennheiser.com", logo: "https://cloudflare.shopincdn.ovh/victorso/cache/images/imagenes/logosmarcas2/165x83_q100_png9_cr0_fix1/senheiser.png",
+    description: "Marca alemana centenaria en audio profesional, reconocida mundialmente por sus auriculares y micrófonos de altísima fidelidad." },
 ];
 
 /** Genera un array de variantes con precio derivado del precio base */

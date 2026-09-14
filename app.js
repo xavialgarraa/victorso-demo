@@ -182,6 +182,7 @@ function updateCartCount() {
 const routes = [
   { pattern: /^\/$/, render: renderHome },
   { pattern: /^\/category\/([\w-]+)$/, render: (m, q) => renderCategory(m[1], q) },
+  { pattern: /^\/brand\/([\w-]+)$/, render: (m) => renderBrand(m[1]) },
   { pattern: /^\/product\/([\w-]+)$/, render: (m) => renderProduct(m[1]) },
   { pattern: /^\/cart$/, render: renderCart },
   { pattern: /^\/checkout$/, render: renderCheckout },
@@ -249,7 +250,7 @@ function productCard(p) {
 }
 
 function brandLogo(b) {
-  const href = `#/search?brand=${encodeURIComponent(b.name)}`;
+  const href = `#/brand/${b.slug}`;
   return b.logo
     ? `<a class="ticker__logo" href="${href}" aria-label="${escapeHtml(b.name)}">${lazyImg(b.logo, b.name)}</a>`
     : `<a class="ticker__pill" href="${href}">${escapeHtml(b.name)}</a>`;
@@ -283,34 +284,91 @@ function testimonialsBlock() {
  * las zonas oscuras del centro.
  */
 function storeHeroMarkup() {
-  const offer = [...PRODUCTS]
+  const offers = [...PRODUCTS]
     .filter((p) => p.compareAtPrice && p.compareAtPrice > p.price)
-    .sort((a, b) => (1 - a.price / a.compareAtPrice) - (1 - b.price / b.compareAtPrice))
-    .pop();
+    .sort((a, b) => (1 - b.price / b.compareAtPrice) - (1 - a.price / a.compareAtPrice))
+    .slice(0, 2);
   const fresh = PRODUCTS.find((p) => p.isNew) || PRODUCTS[0];
-  const pct = offer ? Math.round((1 - offer.price / offer.compareAtPrice) * 100) : 0;
+
+  const slides = [
+    ...offers.map((offer) => {
+      const pct = Math.round((1 - offer.price / offer.compareAtPrice) * 100);
+      return {
+        href: `#/product/${offer.handle}`, image: offer.images[0],
+        badge: t("storeHeroOfferBadge", pct), badgeCls: "storehero__badge--offer",
+        eyebrow: offer.vendor, title: offer.title,
+        priceHtml: `<div class="storehero__price"><span class="now">${euros(offer.price)}</span><span class="was">${euros(offer.compareAtPrice)}</span></div>`,
+        cta: t("storeHeroOfferCta"), ctaCls: "btn--primary",
+      };
+    }),
+    {
+      href: `#/product/${fresh.handle}`, image: fresh.images[0],
+      badge: t("storeHeroNewBadge"), badgeCls: "storehero__badge--new",
+      eyebrow: fresh.vendor, title: fresh.title, priceHtml: "",
+      cta: t("storeHeroNewCta"), ctaCls: "btn--outline",
+    },
+  ];
+
   return `
   <section class="storehero">
-    <div class="container storehero__grid">
-      <a class="storehero__card storehero__card--offer" href="#/product/${offer.handle}" style="background-image:url('${offer.images[0]}')">
-        <span class="storehero__badge storehero__badge--offer">${t("storeHeroOfferBadge", pct)}</span>
-        <div class="storehero__info">
-          <div class="storehero__eyebrow">${escapeHtml(offer.vendor)}</div>
-          <h2 class="storehero__title">${escapeHtml(offer.title)}</h2>
-          <div class="storehero__price"><span class="now">${euros(offer.price)}</span><span class="was">${euros(offer.compareAtPrice)}</span></div>
-          <span class="btn btn--primary">${t("storeHeroOfferCta")}</span>
-        </div>
-      </a>
-      <a class="storehero__card storehero__card--new" href="#/product/${fresh.handle}" style="background-image:url('${fresh.images[0]}')">
-        <span class="storehero__badge storehero__badge--new">${t("storeHeroNewBadge")}</span>
-        <div class="storehero__info">
-          <div class="storehero__eyebrow">${escapeHtml(fresh.vendor)}</div>
-          <h3 class="storehero__title">${escapeHtml(fresh.title)}</h3>
-          <span class="btn btn--outline">${t("storeHeroNewCta")}</span>
-        </div>
-      </a>
+    <div class="storehero__viewport">
+      <div class="storehero__track" id="storeHeroTrack">
+        ${slides.map((s, i) => `
+          <a class="storehero__slide ${i === 0 ? "active" : ""}" href="${s.href}" style="background-image:url('${s.image}')">
+            <span class="storehero__badge ${s.badgeCls}">${s.badge}</span>
+            <div class="storehero__info">
+              <div class="storehero__eyebrow">${escapeHtml(s.eyebrow)}</div>
+              <h2 class="storehero__title">${escapeHtml(s.title)}</h2>
+              ${s.priceHtml}
+              <span class="btn ${s.ctaCls}">${s.cta}</span>
+            </div>
+          </a>`).join("")}
+      </div>
+      <button class="storehero__arrow storehero__arrow--prev" id="storeHeroPrev" aria-label="${t("carouselPrev")}">${icon("arrowRight")}</button>
+      <button class="storehero__arrow storehero__arrow--next" id="storeHeroNext" aria-label="${t("carouselNext")}">${icon("arrowRight")}</button>
+      <div class="storehero__dots" id="storeHeroDots">
+        ${slides.map((_, i) => `<button class="storehero__dot ${i === 0 ? "active" : ""}" data-i="${i}" aria-label="${i + 1}"></button>`).join("")}
+      </div>
+    </div>
+    <div class="storehero__brands">
+      <span class="storehero__brandsLabel">${t("sectionBrands")}</span>
+      ${brandStrip()}
     </div>
   </section>`;
+}
+
+function initStoreHero() {
+  const track = document.getElementById("storeHeroTrack");
+  if (!track) return;
+  const slides = [...track.children];
+  const dots = [...document.querySelectorAll("#storeHeroDots .storehero__dot")];
+  let idx = 0;
+  let timer = null;
+
+  function show(i) {
+    idx = (i + slides.length) % slides.length;
+    track.style.transform = `translateX(-${idx * 100}%)`;
+    slides.forEach((s, j) => s.classList.toggle("active", j === idx));
+    dots.forEach((d, j) => d.classList.toggle("active", j === idx));
+  }
+  function next() { show(idx + 1); }
+  function prev() { show(idx - 1); }
+  function restart() {
+    if (timer) clearInterval(timer);
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      timer = setInterval(next, 5500);
+    }
+  }
+
+  document.getElementById("storeHeroNext").addEventListener("click", () => { next(); restart(); });
+  document.getElementById("storeHeroPrev").addEventListener("click", () => { prev(); restart(); });
+  dots.forEach((d) => d.addEventListener("click", () => { show(Number(d.dataset.i)); restart(); }));
+  const viewport = track.parentElement;
+  viewport.addEventListener("mouseenter", () => { if (timer) clearInterval(timer); });
+  viewport.addEventListener("mouseleave", restart);
+
+  show(0);
+  restart();
 }
 
 function renderHome() {
@@ -353,13 +411,6 @@ function renderHome() {
     </div>
   </section>
 
-  <section class="section section--muted reveal">
-    <div class="container">
-      <div class="section__head"><h2>${t("sectionBrands")}</h2></div>
-      ${brandStrip()}
-    </div>
-  </section>
-
   <section class="section reveal">
     <div class="container">
       <div class="section__head"><h2>${t("sectionTestimonials")}</h2></div>
@@ -369,6 +420,7 @@ function renderHome() {
   `;
   bindQuickAdd();
   mountLazyImages(APP);
+  initStoreHero();
 }
 
 /* ---------------------------------------------------------------------- */
@@ -383,6 +435,26 @@ function renderCategory(slug, query) {
     query,
     basePath: `/category/${slug}`,
   });
+}
+
+function renderBrand(slug) {
+  const brand = BRANDS.find((b) => b.slug === slug);
+  if (!brand) { location.hash = "#/"; return; }
+  const count = PRODUCTS.filter((p) => p.vendor === brand.name).length;
+  APP.innerHTML = `
+  <div class="breadcrumb"><a href="#/">${t("breadcrumbHome")}</a> / ${escapeHtml(brand.name)}</div>
+  <section class="section brand-page">
+    <div class="container brand-page__inner">
+      <div class="brand-page__logo">${lazyImg(brand.logo, brand.name)}</div>
+      <h1 class="section-title-lg">${escapeHtml(brand.name)}</h1>
+      <p class="visit-text">${escapeHtml(brand.description)}</p>
+      <div class="brand-page__actions">
+        <a class="btn btn--outline" href="${brand.website}" target="_blank" rel="noopener">${t("brandVisitSite")} ${icon("arrowRight")}</a>
+        <a class="btn btn--primary" href="#/search?brand=${encodeURIComponent(brand.name)}">${t("brandSeeProducts", count)}</a>
+      </div>
+    </div>
+  </section>`;
+  mountLazyImages(APP);
 }
 
 function renderSearch(query) {
