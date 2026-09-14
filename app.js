@@ -1231,12 +1231,10 @@ function applyChrome() {
   document.getElementById("mainNav").innerHTML = NAV_LINKS
     .map((l) => `<a href="${l.href}" class="${l.cls || ""}">${t(l.key)}</a>`).join("") + `
     <div class="mainnav__utils">
-      <div class="mainnav__langs">
+      <select class="mainnav__lang-select" id="mainnavLangSelect" aria-label="Idioma">
         ${Object.entries(LOCALES).map(([code, l]) => `
-          <button class="mainnav__lang ${code === I18n.current ? "active" : ""}" data-lang="${code}">
-            ${flagHtml(l.flag)}<span>${escapeHtml(l.label)}</span>
-          </button>`).join("")}
-      </div>
+          <option value="${code}" ${code === I18n.current ? "selected" : ""}>${escapeHtml(l.label)}</option>`).join("")}
+      </select>
       <button class="mainnav__theme" id="mainnavTheme">
         <span class="icon" id="mainnavThemeIcon"></span>
         <span id="mainnavThemeLabel"></span>
@@ -1253,14 +1251,12 @@ function applyChrome() {
       }
     });
   });
-  document.getElementById("mainNav").querySelectorAll(".mainnav__lang").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const code = btn.dataset.lang;
-      I18n.set(code);
-      applyChrome();
-      router();
-      toast(t("toastLang", LOCALES[code].urlHint));
-    });
+  document.getElementById("mainnavLangSelect").addEventListener("change", (e) => {
+    const code = e.target.value;
+    I18n.set(code);
+    applyChrome();
+    router();
+    toast(t("toastLang", LOCALES[code].urlHint));
   });
   document.getElementById("mainnavTheme").addEventListener("click", () => Theme.toggle());
 

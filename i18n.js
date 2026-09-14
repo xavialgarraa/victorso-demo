@@ -7,10 +7,10 @@
  */
 
 const LOCALES = {
-  es: { label: "Español", flag: "🇪🇸", urlHint: "victorso.com/es" },
-  en: { label: "English", flag: "🇬🇧", urlHint: "victorso.com/en" },
-  fr: { label: "Français", flag: "🇫🇷", urlHint: "victorso.com/fr" },
-  pt: { label: "Português", flag: "🇵🇹", urlHint: "victorso.com/pt" },
+  es: { label: "Español", flag: "assets/flag-es.svg", urlHint: "victorso.com/es" },
+  en: { label: "English", flag: "assets/flag-en.svg", urlHint: "victorso.com/en" },
+  fr: { label: "Français", flag: "assets/flag-fr.svg", urlHint: "victorso.com/fr" },
+  pt: { label: "Português", flag: "assets/flag-pt.svg", urlHint: "victorso.com/pt" },
   ca: { label: "Català", flag: "assets/flag-catalonia.webp", urlHint: "victorso.com/ca" },
 };
 
