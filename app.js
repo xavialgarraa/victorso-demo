@@ -117,11 +117,6 @@ const Theme = {
     const navLabel = document.getElementById("mainnavThemeLabel");
     if (navIcon) navIcon.innerHTML = iconHtml;
     if (navLabel) navLabel.textContent = label;
-    const logo = document.querySelector(".header .logo__full");
-    if (logo) {
-      const src = dark ? logo.dataset.srcDark : logo.dataset.srcLight;
-      if (src && logo.src !== src) logo.src = src;
-    }
   },
 };
 

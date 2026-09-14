@@ -37,13 +37,13 @@
   --shadow-lg: 0 16px 40px rgba(20,20,25,.14);
   --overlay: rgba(10,10,12,.55);
 
-  --nav-bg: #ffffff;
-  --nav-text: #17171a;
-  --nav-text-soft: rgba(23,23,26,.7);
-  --nav-border: rgba(0,0,0,.09);
-  --nav-surface: rgba(0,0,0,.05);
-  --nav-surface-hover: rgba(0,0,0,.1);
-  --nav-overlay: rgba(255,255,255,.92);
+  --nav-bg: #202024;
+  --nav-text: #f2f2f3;
+  --nav-text-soft: rgba(242,242,243,.7);
+  --nav-border: rgba(255,255,255,.08);
+  --nav-surface: rgba(255,255,255,.08);
+  --nav-surface-hover: rgba(255,255,255,.14);
+  --nav-overlay: rgba(32,32,36,.9);
 }
 
 :root[data-theme="dark"] {
