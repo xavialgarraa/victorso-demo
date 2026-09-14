@@ -306,7 +306,9 @@ function scrollHeroMarkup() {
               <h1 class="scrollhero__title">${t(s.titleKey)}</h1>
               <p class="scrollhero__desc">${t(s.descKey)}</p>
               <div class="scrollhero__actions">
-                <a href="#/category/${s.slug}" class="btn btn--primary">${t(s.ctaKey)}</a>
+                ${i === 0
+                  ? `<a href="#/search" class="btn btn--primary">${t("heroCtaShop")}</a>`
+                  : `<a href="#/category/${s.slug}" class="btn btn--primary">${t(s.ctaKey)}</a>`}
                 ${i === 0
                   ? `<a href="#/quienes-somos" class="btn btn--outline">${t("heroCtaAbout")}</a>`
                   : `<a href="#/category/outlet" class="btn btn--outline">${t("heroCtaOutlet")}</a>`}
