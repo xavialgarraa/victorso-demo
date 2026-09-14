@@ -366,6 +366,7 @@ function storeHeroMarkup() {
       <span class="storehero__brandsLabel">${t("sectionBrands")}</span>
       ${brandStrip()}
     </div>
+    <div class="storehero__scrollhint">${icon("chevronDown")}<span>${t("scrollHint")}</span></div>
   </section>`;
 }
 
@@ -1151,10 +1152,16 @@ function closeMobileMenu() {
 
 function updateHeaderOffset() {
   // Solo .header es sticky (la topbar se desplaza fuera de vista), así
-  // que el hueco reservado para el hero fijo debe ser solo su altura.
+  // que el hueco reservado para el menú móvil fijo debe ser solo su altura.
   const header = document.querySelector(".header");
   const h = header?.offsetHeight || 0;
   document.documentElement.style.setProperty("--header-offset", h + "px");
+  // Al cargar la página (scroll 0) la topbar SÍ ocupa espacio visible, así
+  // que el hero necesita reservar topbar + header para llenar justo el
+  // resto del viewport y que las marcas queden pegadas al fold.
+  const topbar = document.querySelector(".topbar");
+  const chromeH = h + (topbar?.offsetHeight || 0);
+  document.documentElement.style.setProperty("--topchrome-offset", chromeH + "px");
 }
 
 const NAV_LINKS = [
