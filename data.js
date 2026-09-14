@@ -18,14 +18,6 @@
  * ------------------------------------------------------------------
  */
 
-/**
- * Secuencia de fotogramas del plano secuencia (scrub sobre canvas).
- * Se rellena tras extraer los frames del vídeo con ffmpeg, p. ej.:
- *   const HERO_FRAMES = { path: "assets/hero/frames/", count: 96, ext: "webp" };
- * Mientras sea null, el hero usa el sistema de 3 imágenes con zoom.
- */
-const HERO_FRAMES = { path: "assets/hero/frames/", count: 96, ext: "webp" };
-
 const CATEGORIES = [
   { slug: "dj", title: "Equipos DJ", icon: "sliders", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/6/7/8/1200x1200_q100_png9_cr0_fix1/CDJ-1500X_prm_angle_260611.jpg" },
   { slug: "sonido", title: "Sonido Profesional", icon: "speaker", image: "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/0/5/1200x1200_q100_png9_cr0_fix1/001_ART-915-A-front.jpg" },
@@ -98,7 +90,7 @@ const RAW_PRODUCTS = [
   },
   {
     id: "omnis-duo", handle: "alphatheta-omnis-duo", title: "AlphaTheta OMNIS-DUO Sistema Todo en Uno",
-    vendor: "AlphaTheta", category: "dj", price: 1899, compareAtPrice: null,
+    vendor: "AlphaTheta", category: "dj", price: 1899, compareAtPrice: null, isNew: true,
     tags: ["dj", "todo-en-uno", "AlphaTheta"],
     images: ["https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/6/6/1200x1200_q100_png9_cr0_fix1/alphatheta-omnis-duo.jpg", "https://cloudflare.shopincdn.ovh/victorso/cache/images/_product_catalogue_/4/5/6/6/1200x1200_q100_png9_cr0_fix1/alphatheta-omnis-duo.jpg"],
     optionName: "Color",

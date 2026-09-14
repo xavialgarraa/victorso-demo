@@ -190,8 +190,6 @@ const routes = [
   { pattern: /^\/instalaciones$/, render: renderInstallations },
 ];
 
-let scrollHeroCleanup = null;
-
 function parseHash() {
   const raw = location.hash.slice(1) || "/";
   const [path, queryStr] = raw.split("?");
@@ -203,7 +201,6 @@ function router() {
   const { path, query } = parseHash();
   const match = routes.find((r) => r.pattern.test(path));
   closeMobileMenu();
-  if (scrollHeroCleanup) { scrollHeroCleanup(); scrollHeroCleanup = null; }
   if (!match) {
     APP.innerHTML = `<div class="section text-center"><h2>${t("notFound")}</h2><a class="btn btn--primary" href="#/">${t("backHome")}</a></div>`;
     return;
@@ -285,229 +282,35 @@ function testimonialsBlock() {
  * la zona de interés de cada plano (cabina, escenario, mesa) y no hacia
  * las zonas oscuras del centro.
  */
-const HERO_SCENES = [
-  { slug: "dj", eyebrowKey: "hero1Eyebrow", titleKey: "hero1Title", descKey: "hero1Desc", ctaKey: "heroCtaDj", image: "assets/hero/scene1-sala.png", origin: "50% 42%" },
-  { slug: "sonido", eyebrowKey: "hero2Eyebrow", titleKey: "hero2Title", descKey: "hero2Desc", ctaKey: "navSonido", image: "assets/hero/scene2-escenario.png", origin: "50% 38%" },
-  { slug: "dj", eyebrowKey: "hero3Eyebrow", titleKey: "hero3Title", descKey: "hero3Desc", ctaKey: "heroCtaDj", image: "assets/hero/scene3-mesa.png", origin: "50% 62%" },
-];
-
-function scrollHeroMarkup() {
-  const scenesWithImg = HERO_SCENES.map((s) => ({ ...s, image: s.image || CATEGORIES.find((c) => c.slug === s.slug)?.image }));
+function storeHeroMarkup() {
+  const offer = [...PRODUCTS]
+    .filter((p) => p.compareAtPrice && p.compareAtPrice > p.price)
+    .sort((a, b) => (1 - a.price / a.compareAtPrice) - (1 - b.price / b.compareAtPrice))
+    .pop();
+  const fresh = PRODUCTS.find((p) => p.isNew) || PRODUCTS[0];
+  const pct = offer ? Math.round((1 - offer.price / offer.compareAtPrice) * 100) : 0;
   return `
-  <section class="scrollhero" style="height:calc(${HERO_SCENES.length * 150}vh + 100vh)">
-    <div class="scrollhero__stage">
-      <div class="scrollhero__bg">
-        ${typeof HERO_FRAMES !== "undefined" && HERO_FRAMES
-          ? `<img src="${scenesWithImg[0].image}" alt="" class="active"><canvas class="scrollhero__canvas"></canvas>`
-          : scenesWithImg.map((s, i) => `<img src="${s.image}" alt="" class="${i === 0 ? "active" : ""}" style="transform-origin:${s.origin || "50% 50%"}">`).join("")}
-      </div>
-      <div class="scrollhero__content">
-        <div class="scrollhero__inner">
-          ${scenesWithImg.map((s, i) => `
-            <div class="scrollhero__scene ${i === 0 ? "active" : ""}" data-scene="${i}">
-              <div class="scrollhero__eyebrow">${t(s.eyebrowKey)}</div>
-              <h1 class="scrollhero__title">${t(s.titleKey)}</h1>
-              <p class="scrollhero__desc">${t(s.descKey)}</p>
-              <div class="scrollhero__actions">
-                ${i === 0
-                  ? `<a href="#/search" class="btn btn--primary">${t("heroCtaShop")}</a>`
-                  : `<a href="#/category/${s.slug}" class="btn btn--primary">${t(s.ctaKey)}</a>`}
-                ${i === 0
-                  ? `<a href="#/quienes-somos" class="btn btn--outline">${t("heroCtaAbout")}</a>`
-                  : `<a href="#/category/outlet" class="btn btn--outline">${t("heroCtaOutlet")}</a>`}
-              </div>
-            </div>`).join("")}
+  <section class="storehero">
+    <div class="container storehero__grid">
+      <a class="storehero__card storehero__card--offer" href="#/product/${offer.handle}" style="background-image:url('${offer.images[0]}')">
+        <span class="storehero__badge storehero__badge--offer">${t("storeHeroOfferBadge", pct)}</span>
+        <div class="storehero__info">
+          <div class="storehero__eyebrow">${escapeHtml(offer.vendor)}</div>
+          <h2 class="storehero__title">${escapeHtml(offer.title)}</h2>
+          <div class="storehero__price"><span class="now">${euros(offer.price)}</span><span class="was">${euros(offer.compareAtPrice)}</span></div>
+          <span class="btn btn--primary">${t("storeHeroOfferCta")}</span>
         </div>
-      </div>
-      <div class="scrollhero__progress">
-        ${scenesWithImg.map((_, i) => `<span class="scrollhero__dot ${i === 0 ? "active" : ""}"></span>`).join("")}
-      </div>
-      <div class="scrollhero__scrollhint">${icon("chevronDown")}<span>${t("scrollHint")}</span></div>
+      </a>
+      <a class="storehero__card storehero__card--new" href="#/product/${fresh.handle}" style="background-image:url('${fresh.images[0]}')">
+        <span class="storehero__badge storehero__badge--new">${t("storeHeroNewBadge")}</span>
+        <div class="storehero__info">
+          <div class="storehero__eyebrow">${escapeHtml(fresh.vendor)}</div>
+          <h3 class="storehero__title">${escapeHtml(fresh.title)}</h3>
+          <span class="btn btn--outline">${t("storeHeroNewCta")}</span>
+        </div>
+      </a>
     </div>
   </section>`;
-}
-
-/**
- * Cámara ligada al scroll ("dolly"): dentro de cada escena la imagen hace
- * un zoom continuo (te acercas al escenario) y en cada transición la
- * escena entrante aparece en un plano más abierto que el plano cerrado
- * de la saliente — se percibe como que la cámara "tira hacia atrás" y
- * vuelve a empujar hacia el siguiente punto de interés. Todo se calcula
- * por frame a partir de la posición real de scroll (scrub 1:1, sin
- * animaciones por tiempo), con requestAnimationFrame.
- */
-/**
- * Motor de plano secuencia real: pinta en un <canvas> el fotograma del
- * vídeo que corresponde a la posición exacta del scroll (técnica tipo
- * Apple AirPods). Los frames se precargan de forma progresiva — primero
- * uno de cada seis para tener el recorrido completo enseguida, luego se
- * rellenan los huecos — y mientras un frame no está cargado se pinta el
- * más cercano disponible, así el scrub nunca se queda en negro.
- */
-function initScrollHeroCanvas(cfg, sceneCount) {
-  const section = document.querySelector(".scrollhero");
-  if (!section) return;
-  const stage = section.querySelector(".scrollhero__stage");
-  const canvas = section.querySelector(".scrollhero__canvas");
-  const poster = section.querySelector(".scrollhero__bg img");
-  const scenes = [...section.querySelectorAll(".scrollhero__scene")];
-  const dots = [...section.querySelectorAll(".scrollhero__dot")];
-  const ctx = canvas.getContext("2d");
-  const frames = new Array(cfg.count).fill(null);
-  let targetIdx = 0;
-  let drawnIdx = -1;
-  let ticking = false;
-
-  const frameSrc = (i) => `${cfg.path}frame-${String(i + 1).padStart(4, "0")}.${cfg.ext}`;
-
-  // Orden de precarga: pasada gruesa (1 de cada 6), media (1 de cada 2), fina
-  const order = [];
-  const seen = new Set();
-  [6, 2, 1].forEach((step) => {
-    for (let i = 0; i < cfg.count; i += step) {
-      if (!seen.has(i)) { seen.add(i); order.push(i); }
-    }
-  });
-  let cursor = 0;
-  const CONCURRENCY = 4;
-  function pump() {
-    while (cursor < order.length) {
-      const inFlight = order.slice(0, cursor).filter((i) => frames[i] === "loading").length;
-      if (inFlight >= CONCURRENCY) return;
-      const i = order[cursor++];
-      const im = new Image();
-      frames[i] = "loading";
-      im.onload = () => {
-        frames[i] = im;
-        if (poster && poster.style.opacity !== "0" ) { poster.style.opacity = "0"; }
-        if (Math.abs(i - targetIdx) < 6) draw();
-        pump();
-      };
-      im.onerror = () => { frames[i] = null; pump(); };
-      im.src = frameSrc(i);
-      if (cursor <= CONCURRENCY) continue;
-      return;
-    }
-  }
-
-  function nearestLoaded(target) {
-    if (frames[target] instanceof Image) return frames[target];
-    for (let d = 1; d < cfg.count; d++) {
-      const a = frames[target - d], b = frames[target + d];
-      if (a instanceof Image) return a;
-      if (b instanceof Image) return b;
-    }
-    return null;
-  }
-
-  function resize() {
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
-    canvas.width = Math.round(stage.clientWidth * dpr);
-    canvas.height = Math.round(stage.clientHeight * dpr);
-    drawnIdx = -1;
-    draw();
-  }
-
-  function draw() {
-    const img = nearestLoaded(targetIdx);
-    if (!img || drawnIdx === targetIdx) return;
-    const cw = canvas.width, ch = canvas.height;
-    const iw = img.naturalWidth, ih = img.naturalHeight;
-    const s = Math.max(cw / iw, ch / ih);
-    const dw = iw * s, dh = ih * s;
-    ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
-    drawnIdx = targetIdx;
-  }
-
-  function update() {
-    ticking = false;
-    // si el canvas se dimensionó con la ventana oculta (ancho 0), recupéralo
-    if (canvas.width === 0 && stage.clientWidth > 0) { resize(); return; }
-    const rect = section.getBoundingClientRect();
-    const total = rect.height - stage.offsetHeight;
-    const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
-    const p = total > 0 ? scrolled / total : 0;
-    targetIdx = Math.min(cfg.count - 1, Math.max(0, Math.round(p * (cfg.count - 1))));
-    draw();
-    const idx = Math.min(sceneCount - 1, Math.max(0, Math.floor(p * sceneCount)));
-    scenes.forEach((s2, i) => s2.classList.toggle("active", i === idx));
-    dots.forEach((d, i) => d.classList.toggle("active", i === idx));
-    stage.classList.toggle("at-end", p > 0.96);
-  }
-  function onScroll() {
-    if (!ticking) { requestAnimationFrame(update); ticking = true; }
-  }
-  window.addEventListener("scroll", onScroll, { passive: true });
-  const ro = new ResizeObserver(() => resize());
-  ro.observe(stage);
-  resize();
-  update();
-  pump();
-  scrollHeroCleanup = () => {
-    window.removeEventListener("scroll", onScroll);
-    ro.disconnect();
-  };
-}
-
-function initScrollHero(sceneCount) {
-  if (typeof HERO_FRAMES !== "undefined" && HERO_FRAMES) {
-    initScrollHeroCanvas(HERO_FRAMES, sceneCount);
-    return;
-  }
-  const section = document.querySelector(".scrollhero");
-  if (!section) return;
-  const stage = section.querySelector(".scrollhero__stage");
-  const bgImgs = [...section.querySelectorAll(".scrollhero__bg img")];
-  const scenes = [...section.querySelectorAll(".scrollhero__scene")];
-  const dots = [...section.querySelectorAll(".scrollhero__dot")];
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let ticking = false;
-
-  const seg = 1 / sceneCount;      // porción de scroll que ocupa cada escena
-  const FADE_W = seg * 0.18;       // semiancho del crossfade en cada frontera
-  const ZOOM_FROM = 1.04;          // plano de entrada (más abierto = "tirón atrás")
-  const ZOOM_TO = 1.3;             // plano final del empuje hacia dentro
-
-  const clamp01 = (v) => Math.min(1, Math.max(0, v));
-  const easeInOut = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
-
-  function update() {
-    ticking = false;
-    const rect = section.getBoundingClientRect();
-    const total = rect.height - stage.offsetHeight;
-    const scrolled = Math.min(Math.max(-rect.top, 0), Math.max(total, 1));
-    const p = total > 0 ? scrolled / total : 0;
-
-    bgImgs.forEach((img, i) => {
-      const start = i * seg;
-      const end = (i + 1) * seg;
-      // crossfade solapado centrado en cada frontera de escena
-      const oIn = i === 0 ? 1 : clamp01((p - (start - FADE_W)) / (FADE_W * 2));
-      const oOut = i === sceneCount - 1 ? 1 : clamp01(((end + FADE_W) - p) / (FADE_W * 2));
-      // el zoom arranca en cuanto la escena empieza a aparecer, así la
-      // cámara nunca se detiene durante el fundido
-      const tz = clamp01((p - (start - FADE_W)) / (seg + FADE_W * 2));
-      img.style.opacity = Math.min(oIn, oOut).toFixed(3);
-      img.style.transform = reduceMotion
-        ? "none"
-        : `scale(${(ZOOM_FROM + (ZOOM_TO - ZOOM_FROM) * easeInOut(tz)).toFixed(4)}) translateZ(0)`;
-    });
-
-    const idx = Math.min(sceneCount - 1, Math.max(0, Math.floor(p / seg)));
-    scenes.forEach((s, i) => s.classList.toggle("active", i === idx));
-    dots.forEach((d, i) => d.classList.toggle("active", i === idx));
-    stage.classList.toggle("at-end", p > 0.96);
-  }
-  function onScroll() {
-    if (!ticking) { requestAnimationFrame(update); ticking = true; }
-  }
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll, { passive: true });
-  update();
-  scrollHeroCleanup = () => {
-    window.removeEventListener("scroll", onScroll);
-    window.removeEventListener("resize", onScroll);
-  };
 }
 
 function renderHome() {
@@ -515,7 +318,7 @@ function renderHome() {
   const bestsellers = [...PRODUCTS].sort((a, b) => b.reviewsCount - a.reviewsCount).slice(0, 8);
 
   APP.innerHTML = `
-  ${scrollHeroMarkup()}
+  ${storeHeroMarkup()}
 
   <div class="shipband">${icon("truck")}<span>${t("shipBanner")}</span></div>
 
@@ -566,7 +369,6 @@ function renderHome() {
   `;
   bindQuickAdd();
   mountLazyImages(APP);
-  initScrollHero(HERO_SCENES.length);
 }
 
 /* ---------------------------------------------------------------------- */
