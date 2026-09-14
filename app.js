@@ -394,12 +394,43 @@ function initStoreHero() {
   initSlidePanel("storeHeroRight", 6000);
 }
 
+function discoverStripMarkup() {
+  const items = [
+    { href: "#/instalaciones", image: INSTALLATIONS[0].image, icon: "speaker",
+      title: t("discoverInstallTitle"), text: t("discoverInstallText") },
+    { href: "https://wa.me/34619406443", solid: true, icon: "chat",
+      title: t("discoverContactTitle"), text: t("discoverContactText") },
+    { href: "#/quienes-somos", image: "assets/tienda-fachada.jpeg", icon: "shield",
+      title: t("discoverAboutTitle"), text: t("discoverAboutText") },
+  ];
+  return `
+  <section class="section discover reveal">
+    <div class="container">
+      <div class="section__head"><h2>${t("discoverTitle")}</h2></div>
+      <div class="discover__grid">
+        ${items.map((it) => `
+          <a class="discover__card ${it.solid ? "discover__card--solid" : ""}" href="${it.href}"
+             ${it.href.startsWith("http") ? 'target="_blank" rel="noopener"' : ""}
+             ${it.image ? `style="background-image:url('${it.image}')"` : ""}>
+            <span class="discover__icon">${icon(it.icon)}</span>
+            <div class="discover__info">
+              <h3>${escapeHtml(it.title)}</h3>
+              <p>${escapeHtml(it.text)}</p>
+              <span class="discover__link">${t("discoverLink")} ${icon("arrowRight")}</span>
+            </div>
+          </a>`).join("")}
+      </div>
+    </div>
+  </section>`;
+}
+
 function renderHome() {
   const featured = PRODUCTS.filter((p) => p.compareAtPrice).slice(0, 4);
   const bestsellers = [...PRODUCTS].sort((a, b) => b.reviewsCount - a.reviewsCount).slice(0, 8);
 
   APP.innerHTML = `
   ${storeHeroMarkup()}
+  ${discoverStripMarkup()}
 
   <section class="section reveal">
     <div class="container">
