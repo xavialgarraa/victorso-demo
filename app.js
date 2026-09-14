@@ -361,12 +361,16 @@ function storeHeroMarkup() {
         <span class="storehero__ctaBtn-text">${t("storeHeroCtaBtn")}</span>
         <span class="storehero__ctaBtn-arrow">${icon("arrowRight")}</span>
       </a>
+      <button class="storehero__ctaBtn storehero__ctaBtn--outline" id="storeHeroCatBtn">
+        <span class="storehero__ctaBtn-text">${t("storeHeroCatBtn")}</span>
+        <span class="storehero__ctaBtn-arrow">${icon("arrowRight")}</span>
+      </button>
     </div>
     <div class="storehero__brands">
       <span class="storehero__brandsLabel">${t("sectionBrands")}</span>
       ${brandStrip()}
+      <div class="storehero__scrollhint">${icon("chevronDown")}<span>${t("scrollHint")}</span></div>
     </div>
-    <div class="storehero__scrollhint">${icon("chevronDown")}<span>${t("scrollHint")}</span></div>
   </section>`;
 }
 
@@ -405,6 +409,9 @@ function initStoreHero() {
   initSlidePanel("storeHeroLeft", 6000);
   initSlidePanel("storeHeroRight", 6000);
   initSlidePanel("storeHeroMobile", 6000);
+  document.getElementById("storeHeroCatBtn")?.addEventListener("click", () => {
+    document.getElementById("categorySection")?.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 }
 
 function discoverStripMarkup() {
@@ -445,7 +452,7 @@ function renderHome() {
   ${storeHeroMarkup()}
   ${discoverStripMarkup()}
 
-  <section class="section reveal">
+  <section class="section reveal" id="categorySection">
     <div class="container">
       <div class="section__head"><h2>${t("sectionCategories")}</h2></div>
       <div class="catgrid">
