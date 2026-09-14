@@ -345,11 +345,16 @@ function storeHeroMarkup() {
     },
   ];
 
+  const mobileSlides = [...leftSlides, ...rightSlides];
+
   return `
   <section class="storehero">
-    <div class="storehero__grid">
+    <div class="storehero__grid storehero__grid--desktop">
       ${slidePanelMarkup("storeHeroLeft", leftSlides)}
       ${slidePanelMarkup("storeHeroRight", rightSlides)}
+    </div>
+    <div class="storehero__grid storehero__grid--mobile">
+      ${slidePanelMarkup("storeHeroMobile", mobileSlides)}
     </div>
     <div class="storehero__ctaWrap">
       <a class="storehero__ctaBtn" href="#/search">
@@ -398,6 +403,7 @@ function initSlidePanel(id, intervalMs) {
 function initStoreHero() {
   initSlidePanel("storeHeroLeft", 6000);
   initSlidePanel("storeHeroRight", 6000);
+  initSlidePanel("storeHeroMobile", 6000);
 }
 
 function discoverStripMarkup() {
