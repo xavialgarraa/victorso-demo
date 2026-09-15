@@ -492,7 +492,6 @@ function renderHome() {
 
   APP.innerHTML = `
   ${storeHeroMarkup()}
-  ${discoverStripMarkup()}
 
   <section class="section reveal" id="categorySection">
     <div class="container">
@@ -507,6 +506,8 @@ function renderHome() {
       </div>
     </div>
   </section>
+
+  ${discoverStripMarkup()}
 
   <div class="shipband">${icon("truck")}<span>${t("shipBanner")}</span></div>
 

@@ -299,12 +299,12 @@ body.nav-open { overflow: hidden; }
   min-height: calc(100svh - var(--topchrome-offset, 140px));
   max-height: 820px;
 }
-.storehero__scrollhint { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.storehero__scrollhint { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-top: -10px; }
 .storehero__scrollhint-circle { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--surface-alt); border: 1px solid var(--border); color: var(--text-muted); font-size: 1.05rem; animation: storehero-bob 1.8s ease-in-out infinite; }
 .storehero__scrollhint-text { color: var(--text-soft); font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; }
 @keyframes storehero-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 @media (prefers-reduced-motion: reduce) { .storehero__scrollhint-circle { animation: none; } }
-.storehero__grid { max-width: var(--maxw); margin: 0 auto; padding: 0 16px; display: grid; grid-template-columns: 1fr; gap: 14px; }
+.storehero__grid { max-width: var(--maxw); margin: 10px auto 0; padding: 0 16px; display: grid; grid-template-columns: 1fr; gap: 14px; }
 .storehero__grid--desktop { display: none; }
 @media (min-width: 760px) {
   .storehero__grid--desktop { display: grid; grid-template-columns: 1fr 1fr; }
@@ -315,24 +315,24 @@ body.nav-open { overflow: hidden; }
 .storehero__track { display: flex; transition: transform .5s var(--ease); }
 .storehero__slide {
   position: relative; flex: 0 0 100%; display: flex; flex-direction: column; justify-content: flex-end;
-  min-height: 190px; overflow: hidden; text-decoration: none;
+  min-height: 210px; overflow: hidden; text-decoration: none;
 }
 .storehero__slide:focus-visible { outline: 2px solid var(--red); outline-offset: -3px; }
 .storehero__slide-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: transform .5s var(--ease); }
 .storehero__slide:hover .storehero__slide-img, .storehero__slide:focus-visible .storehero__slide-img { transform: scale(1.08); }
 .storehero__slide::before { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(10,10,12,.85) 10%, rgba(10,10,12,.25) 55%, rgba(10,10,12,.1) 100%); z-index: 1; }
 @media (prefers-reduced-motion: reduce) { .storehero__slide-img { transition: none; } }
-.storehero__badge { position: absolute; top: 14px; left: 14px; z-index: 2; padding: 6px 14px; border-radius: 20px; font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: #fff; }
+.storehero__badge { position: absolute; top: 16px; left: 16px; z-index: 2; padding: 7px 16px; border-radius: 20px; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: #fff; box-shadow: 0 6px 16px rgba(0,0,0,.25); }
 .storehero__badge--offer { background: var(--red); }
 .storehero__badge--new { background: #1f9d55; }
 .storehero__badge--brand { background: #17171a; border: 1px solid rgba(255,255,255,.3); }
 .storehero__info { position: relative; z-index: 2; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; max-width: 460px; }
 .storehero__eyebrow { font-size: .64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: rgba(255,255,255,.8); }
-.storehero__title { font-size: 1.05rem; line-height: 1.2; color: #fff; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,.4); }
+.storehero__title { font-size: 1.15rem; line-height: 1.18; color: #fff; margin: 0; text-shadow: 0 2px 12px rgba(0,0,0,.45); }
 .storehero__price { display: flex; align-items: baseline; gap: 10px; margin: 2px 0 4px; }
-.storehero__price .now { font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; color: #fff; }
+.storehero__price .now { font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; color: #fff; }
 .storehero__price .was { font-size: .9rem; color: rgba(255,255,255,.6); text-decoration: line-through; }
-.storehero__info .btn { align-self: flex-start; padding: 8px 16px; font-size: .8rem; }
+.storehero__info .btn { align-self: flex-start; padding: 9px 18px; font-size: .85rem; }
 .storehero__info .btn--outline { background: transparent; border-color: rgba(255,255,255,.55); color: #fff; }
 .storehero__info .btn--outline:hover { background: #fff; color: #111; border-color: #fff; }
 .storehero__dots { position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); z-index: 3; display: flex; align-items: center; gap: 5px; transition: opacity .25s ease; }
@@ -343,14 +343,25 @@ body.nav-open { overflow: hidden; }
   .storehero__panel:hover .storehero__dots, .storehero__panel:focus-within .storehero__dots { opacity: 1; }
 }
 @media (min-width: 640px) {
-  .storehero__slide { min-height: 260px; }
-  .storehero__title { font-size: 1.5rem; }
-  .storehero__info { padding: 24px; }
+  .storehero__slide { min-height: 300px; }
+  .storehero__title { font-size: 1.7rem; }
+  .storehero__info { padding: 28px; max-width: 500px; }
+  .storehero__price .now { font-size: 1.7rem; }
 }
-@media (min-width: 900px) { .storehero__slide { min-height: 320px; } }
+@media (min-width: 900px) and (min-height: 920px) {
+  .storehero__slide { min-height: 400px; }
+  .storehero__title { font-size: 2rem; }
+  .storehero__eyebrow { font-size: .72rem; letter-spacing: .8px; }
+}
+@media (min-width: 1240px) and (min-height: 900px) {
+  .storehero__slide { min-height: 440px; }
+  .storehero__title { font-size: 2.3rem; }
+  .storehero__info { padding: 34px; max-width: 560px; }
+}
 @media (prefers-reduced-motion: reduce) { .storehero__track { transition: none; } }
-@media (max-height: 820px) and (min-width: 760px) { .storehero__slide { min-height: 220px; } }
+@media (max-height: 820px) and (min-width: 760px) { .storehero__slide { min-height: 240px; } .storehero__title { font-size: 1.5rem; } .storehero__info { padding: 22px; } }
 @media (max-height: 720px) and (min-width: 760px) { .storehero { gap: 10px; } .storehero__brands .ticker__logo { height: 52px; padding: 7px 18px; } }
+@media (max-height: 820px) { .storehero__grid { margin-top: 4px; } .storehero__scrollhint { margin-top: -4px; } }
 
 .storehero__ctaWrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 @media (min-width: 480px) { .storehero__ctaWrap { flex-direction: row; justify-content: center; flex-wrap: wrap; } }
@@ -397,6 +408,8 @@ body.nav-open { overflow: hidden; }
    así el aviso de "sigue bajando" siempre quepa sin hacer scroll. */
 @media (max-height: 700px) {
   .storehero { padding: 6px 0; gap: 8px; }
+  .storehero__grid { margin-top: 0; }
+  .storehero__scrollhint { margin-top: 0; }
   .storehero__slide { min-height: 150px; }
   .storehero__badge { top: 8px; left: 8px; padding: 4px 10px; font-size: .6rem; }
   .storehero__info { padding: 6px 14px; }
