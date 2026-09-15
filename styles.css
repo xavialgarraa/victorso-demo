@@ -308,7 +308,7 @@ body.nav-open { overflow: hidden; }
 .storehero__grid--desktop { display: none; }
 @media (min-width: 1000px) {
   .storehero__grid { max-width: 1400px; }
-  .storehero__grid--desktop { display: grid; grid-template-columns: repeat(2, minmax(460px, 660px)); justify-content: center; }
+  .storehero__grid--desktop { display: grid; grid-template-columns: repeat(2, minmax(420px, 600px)); justify-content: center; }
   .storehero__grid--mobile { display: none; }
 }
 .storehero__panel { position: relative; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); transition: box-shadow .3s var(--ease), transform .3s var(--ease); height: 100%; }
