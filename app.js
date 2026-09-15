@@ -288,7 +288,8 @@ function slidePanelMarkup(id, slides) {
   <div class="storehero__panel">
     <div class="storehero__track" id="${id}Track">
       ${slides.map((s, i) => `
-        <a class="storehero__slide ${i === 0 ? "active" : ""}" href="${s.href}" style="background-image:url('${s.image}')">
+        <a class="storehero__slide ${i === 0 ? "active" : ""}" href="${s.href}">
+          <img class="storehero__slide-img" src="${s.image}" alt="" loading="lazy">
           <span class="storehero__badge ${s.badgeCls}">${s.badge}</span>
           <div class="storehero__info">
             <div class="storehero__eyebrow">${escapeHtml(s.eyebrow)}</div>

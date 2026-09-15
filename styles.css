@@ -308,10 +308,18 @@ body.nav-open { overflow: hidden; }
   .storehero__grid--desktop { display: grid; grid-template-columns: 1fr 1fr; }
   .storehero__grid--mobile { display: none; }
 }
-.storehero__panel { position: relative; overflow: hidden; border-radius: var(--radius); }
+.storehero__panel { position: relative; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); transition: box-shadow .3s var(--ease); }
+.storehero__panel:hover, .storehero__panel:focus-within { box-shadow: var(--shadow-lg); }
 .storehero__track { display: flex; transition: transform .5s var(--ease); }
-.storehero__slide { position: relative; flex: 0 0 100%; display: flex; flex-direction: column; justify-content: flex-end; min-height: 190px; background-size: cover; background-position: center; text-decoration: none; }
+.storehero__slide {
+  position: relative; flex: 0 0 100%; display: flex; flex-direction: column; justify-content: flex-end;
+  min-height: 190px; overflow: hidden; text-decoration: none;
+}
+.storehero__slide:focus-visible { outline: 2px solid var(--red); outline-offset: -3px; }
+.storehero__slide-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: transform .5s var(--ease); }
+.storehero__slide:hover .storehero__slide-img, .storehero__slide:focus-visible .storehero__slide-img { transform: scale(1.08); }
 .storehero__slide::before { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, rgba(10,10,12,.85) 10%, rgba(10,10,12,.25) 55%, rgba(10,10,12,.1) 100%); z-index: 1; }
+@media (prefers-reduced-motion: reduce) { .storehero__slide-img { transition: none; } }
 .storehero__badge { position: absolute; top: 14px; left: 14px; z-index: 2; padding: 6px 14px; border-radius: 20px; font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; color: #fff; }
 .storehero__badge--offer { background: var(--red); }
 .storehero__badge--new { background: #1f9d55; }
@@ -340,7 +348,7 @@ body.nav-open { overflow: hidden; }
 @media (min-width: 900px) { .storehero__slide { min-height: 320px; } }
 @media (prefers-reduced-motion: reduce) { .storehero__track { transition: none; } }
 @media (max-height: 820px) and (min-width: 760px) { .storehero__slide { min-height: 230px; } }
-@media (max-height: 720px) and (min-width: 760px) { .storehero { gap: 16px; } .storehero__brands .ticker__logo { height: 54px; padding: 8px 20px; } }
+@media (max-height: 720px) and (min-width: 760px) { .storehero { gap: 16px; } .storehero__brands .ticker__logo { height: 64px; padding: 10px 22px; } }
 
 .storehero__ctaWrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 @media (min-width: 480px) { .storehero__ctaWrap { flex-direction: row; justify-content: center; flex-wrap: wrap; } }
@@ -379,7 +387,7 @@ body.nav-open { overflow: hidden; }
 .storehero__brands .ticker__pill { background: var(--surface); border-color: var(--border); color: var(--text-muted); }
 /* En modo claro el borde por defecto (gris muy claro) se pierde sobre el
    fondo blanco de la pagina; se marca mas para que la tarjeta se distinga. */
-.storehero__brands .ticker__logo { height: 70px; padding: 12px 26px; border-color: var(--ticker-logo-border, var(--border-strong)); }
+.storehero__brands .ticker__logo { height: 86px; padding: 14px 30px; border-color: var(--ticker-logo-border, var(--border-strong)); }
 
 /* Viewports bajos (móvil en horizontal, ventanas de escritorio poco altas):
    van al final de toda la sección del hero para ganarle a cualquier regla
@@ -391,7 +399,7 @@ body.nav-open { overflow: hidden; }
   .storehero__info { padding: 8px 14px; }
   .storehero__title { font-size: 1rem; }
   .storehero__ctaWrap { gap: 6px; }
-  .storehero__brands .ticker__logo { height: 46px; padding: 6px 16px; }
+  .storehero__brands .ticker__logo { height: 52px; padding: 7px 18px; }
   .storehero__brands .ticker { padding: 5px 0; }
   .storehero__brandsLabel { margin-bottom: 2px; }
 }
