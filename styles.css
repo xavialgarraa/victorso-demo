@@ -239,6 +239,8 @@ h1, h2, h3, h4, .section__head h2, .section-title-lg { font-weight: 700; letter-
 .mainnav.open a, .mainnav.closing a { padding: 6px 28px; font-size: 1.15rem; font-weight: 600; border-bottom: none; }
 .mainnav a:hover { color: var(--nav-accent); }
 .mainnav__outlet { color: var(--nav-accent) !important; font-weight: 700 !important; }
+.mainnav__brands { display: inline-flex; align-items: center; gap: 5px; }
+.mainnav__brands .icon { font-size: .8em; color: #f2b400; flex-shrink: 0; }
 .mainnav__utils { display: flex; align-items: center; gap: 10px; padding: 0 24px; }
 .mainnav__lang-select { flex: 1; padding: 10px 14px; border-radius: 20px; background: var(--nav-surface); border: none; color: var(--nav-text); font-size: .85rem; font-weight: 600; font-family: inherit; }
 .mainnav__lang-select option { color: #17171a; }
@@ -291,7 +293,7 @@ body.nav-open { overflow: hidden; }
    scroll (ni se corta a media franja, ni se ve ya la siguiente sección). */
 .storehero {
   position: relative;
-  display: flex; flex-direction: column; justify-content: center;
+  display: flex; flex-direction: column; justify-content: space-between;
   box-sizing: border-box; padding: 12px 0; gap: 22px;
   min-height: calc(100vh - var(--topchrome-offset, 140px));
   min-height: calc(100svh - var(--topchrome-offset, 140px));
@@ -303,10 +305,24 @@ body.nav-open { overflow: hidden; }
 @keyframes storehero-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 @media (prefers-reduced-motion: reduce) { .storehero__scrollhint-circle { animation: none; } }
 .storehero__grid { max-width: var(--maxw); margin: 0 auto; padding: 0 16px; display: grid; grid-template-columns: 1fr; gap: 14px; }
-.storehero__grid--desktop { display: none; }
+.storehero__grid--desktop, .storehero__grid--single { display: none; }
 @media (min-width: 760px) {
   .storehero__grid--desktop { display: grid; grid-template-columns: 1fr 1fr; }
   .storehero__grid--mobile { display: none; }
+}
+/* Version B (comparacion, ?heroB=1): un unico banner grande estilo poster
+   en vez de los dos paneles, con titular mucho mas grande e impactante. */
+html.hero-b .storehero__grid--desktop,
+html.hero-b .storehero__grid--mobile { display: none !important; }
+html.hero-b .storehero__grid--single { display: grid; }
+html.hero-b .storehero__grid--single .storehero__slide { min-height: 340px; }
+html.hero-b .storehero__grid--single .storehero__info { max-width: 620px; padding: 28px; }
+html.hero-b .storehero__grid--single .storehero__eyebrow { font-size: .8rem; letter-spacing: 1px; }
+html.hero-b .storehero__grid--single .storehero__title { font-size: 2.6rem; line-height: 1.05; text-transform: uppercase; font-weight: 800; }
+html.hero-b .storehero__grid--single .storehero__info .btn { background: none; border: none; padding: 4px 0; font-size: .95rem; text-decoration: underline; text-underline-offset: 4px; }
+@media (min-width: 900px) {
+  html.hero-b .storehero__grid--single .storehero__slide { min-height: 460px; }
+  html.hero-b .storehero__grid--single .storehero__title { font-size: 3.4rem; }
 }
 .storehero__panel { position: relative; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); transition: box-shadow .3s var(--ease); }
 .storehero__panel:hover, .storehero__panel:focus-within { box-shadow: var(--shadow-lg); }
@@ -347,8 +363,8 @@ body.nav-open { overflow: hidden; }
 }
 @media (min-width: 900px) { .storehero__slide { min-height: 320px; } }
 @media (prefers-reduced-motion: reduce) { .storehero__track { transition: none; } }
-@media (max-height: 820px) and (min-width: 760px) { .storehero__slide { min-height: 230px; } }
-@media (max-height: 720px) and (min-width: 760px) { .storehero { gap: 16px; } .storehero__brands .ticker__logo { height: 64px; padding: 10px 22px; } }
+@media (max-height: 820px) and (min-width: 760px) { .storehero__slide { min-height: 220px; } }
+@media (max-height: 720px) and (min-width: 760px) { .storehero { gap: 10px; } .storehero__brands .ticker__logo { height: 52px; padding: 7px 18px; } }
 
 .storehero__ctaWrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 @media (min-width: 480px) { .storehero__ctaWrap { flex-direction: row; justify-content: center; flex-wrap: wrap; } }
@@ -393,14 +409,15 @@ body.nav-open { overflow: hidden; }
    van al final de toda la sección del hero para ganarle a cualquier regla
    anterior (ancho, paneles, botones, marcas...) sea cual sea el ancho, y
    así el aviso de "sigue bajando" siempre quepa sin hacer scroll. */
-@media (max-height: 640px) {
-  .storehero { padding: 6px 0; gap: 10px; }
-  .storehero__slide { min-height: 130px; }
-  .storehero__info { padding: 8px 14px; }
+@media (max-height: 700px) {
+  .storehero { padding: 6px 0; gap: 8px; }
+  .storehero__slide { min-height: 150px; }
+  .storehero__badge { top: 8px; left: 8px; padding: 4px 10px; font-size: .6rem; }
+  .storehero__info { padding: 6px 14px; }
   .storehero__title { font-size: 1rem; }
-  .storehero__ctaWrap { gap: 6px; }
-  .storehero__brands .ticker__logo { height: 52px; padding: 7px 18px; }
-  .storehero__brands .ticker { padding: 5px 0; }
+  .storehero__ctaWrap { gap: 4px; }
+  .storehero__brands .ticker__logo { height: 48px; padding: 6px 16px; }
+  .storehero__brands .ticker { padding: 4px 0; }
   .storehero__brandsLabel { margin-bottom: 2px; }
 }
 @media (max-height: 520px) {
@@ -711,6 +728,17 @@ body.nav-open { overflow: hidden; }
 .brand-page__logo img { max-height: 100%; max-width: 220px; object-fit: contain; }
 .brand-page .visit-text { margin: 0 auto 22px; }
 .brand-page__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+
+.brandsindex__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 22px; }
+@media (min-width: 560px) { .brandsindex__grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 860px) { .brandsindex__grid { grid-template-columns: repeat(4, 1fr); } }
+.brandsindex__card { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 20px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); text-decoration: none; transition: transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s ease; }
+.brandsindex__card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--red); }
+.brandsindex__logo { display: flex; align-items: center; justify-content: center; height: 48px; }
+.brandsindex__logo img { max-height: 100%; max-width: 100%; object-fit: contain; }
+.brandsindex__name { font-weight: 700; font-size: .88rem; color: var(--text); text-align: center; }
+.brandsindex__card--text { justify-content: center; min-height: 100px; }
+.brandsindex__name--big { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--text); text-align: center; letter-spacing: .2px; }
 
 /* ---------- Instalaciones realizadas ---------- */
 .install-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); margin-top: 22px; }

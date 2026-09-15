@@ -183,6 +183,7 @@ const routes = [
   { pattern: /^\/$/, render: renderHome },
   { pattern: /^\/category\/([\w-]+)$/, render: (m, q) => renderCategory(m[1], q) },
   { pattern: /^\/brand\/([\w-]+)$/, render: (m) => renderBrand(m[1]) },
+  { pattern: /^\/marcas$/, render: renderBrandsIndex },
   { pattern: /^\/product\/([\w-]+)$/, render: (m) => renderProduct(m[1]) },
   { pattern: /^\/cart$/, render: renderCart },
   { pattern: /^\/checkout$/, render: renderCheckout },
@@ -344,6 +345,12 @@ function storeHeroMarkup() {
       eyebrow: t("storeHeroBrandEyebrow"), title: topBrand.name, priceHtml: "",
       cta: t("storeHeroBrandCta"), ctaCls: "btn--outline",
     },
+    {
+      href: "#/marcas", image: bestseller.images[0],
+      badge: t("storeHeroBrandBadge"), badgeCls: "storehero__badge--brand",
+      eyebrow: t("sectionBrands"), title: t("navBrands"), priceHtml: "",
+      cta: t("storeHeroAllBrandsCta"), ctaCls: "btn--outline",
+    },
   ];
 
   const mobileSlides = [...leftSlides, ...rightSlides];
@@ -356,6 +363,9 @@ function storeHeroMarkup() {
     </div>
     <div class="storehero__grid storehero__grid--mobile">
       ${slidePanelMarkup("storeHeroMobile", mobileSlides)}
+    </div>
+    <div class="storehero__grid storehero__grid--single">
+      ${slidePanelMarkup("storeHeroSingle", mobileSlides)}
     </div>
     <div class="storehero__ctaWrap">
       <a class="storehero__ctaBtn" href="#/search">
@@ -440,6 +450,7 @@ function initStoreHero() {
   initSlidePanel("storeHeroLeft", 6000);
   initSlidePanel("storeHeroRight", 6000);
   initSlidePanel("storeHeroMobile", 6000);
+  initSlidePanel("storeHeroSingle", 6000);
   document.getElementById("storeHeroCatBtn")?.addEventListener("click", () => {
     document.getElementById("categorySection")?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
@@ -550,12 +561,34 @@ function renderBrand(slug) {
   <div class="breadcrumb"><a href="#/">${t("breadcrumbHome")}</a> / ${escapeHtml(brand.name)}</div>
   <section class="section brand-page">
     <div class="container brand-page__inner">
-      <div class="brand-page__logo">${lazyImg(brand.logo, brand.name)}</div>
+      ${brand.logo ? `<div class="brand-page__logo">${lazyImg(brand.logo, brand.name)}</div>` : ""}
       <h1 class="section-title-lg">${escapeHtml(brand.name)}</h1>
       <p class="visit-text">${escapeHtml(brand.description)}</p>
       <div class="brand-page__actions">
-        <a class="btn btn--outline" href="${brand.website}" target="_blank" rel="noopener">${t("brandVisitSite")} ${icon("arrowRight")}</a>
-        <a class="btn btn--primary" href="#/search?brand=${encodeURIComponent(brand.name)}">${t("brandSeeProducts", count)}</a>
+        ${brand.website ? `<a class="btn btn--outline" href="${brand.website}" target="_blank" rel="noopener">${t("brandVisitSite")} ${icon("arrowRight")}</a>` : ""}
+        ${count > 0
+          ? `<a class="btn btn--primary" href="#/search?brand=${encodeURIComponent(brand.name)}">${t("brandSeeProducts", count)}</a>`
+          : `<a class="btn btn--primary" href="#/search">${t("storeHeroCtaBtn")}</a>`}
+      </div>
+    </div>
+  </section>`;
+  mountLazyImages(APP);
+}
+
+function renderBrandsIndex() {
+  APP.innerHTML = `
+  <div class="breadcrumb"><a href="#/">${t("breadcrumbHome")}</a> / ${t("navBrands")}</div>
+  <section class="section">
+    <div class="container">
+      <h1 class="section-title-lg">${t("navBrands")}</h1>
+      <p class="visit-text">${t("brandsIndexLede")}</p>
+      <div class="brandsindex__grid">
+        ${BRANDS.map((b) => `
+          <a class="brandsindex__card ${b.logo ? "" : "brandsindex__card--text"}" href="#/brand/${b.slug}">
+            ${b.logo
+              ? `<span class="brandsindex__logo">${lazyImg(b.logo, b.name)}</span><span class="brandsindex__name">${escapeHtml(b.name)}</span>`
+              : `<span class="brandsindex__name brandsindex__name--big">${escapeHtml(b.name)}</span>`}
+          </a>`).join("")}
       </div>
     </div>
   </section>`;
@@ -1204,6 +1237,7 @@ function updateHeaderOffset() {
 
 const NAV_LINKS = [
   { key: "navHome", href: "#/" },
+  { key: "navBrands", href: "#/marcas", cls: "mainnav__brands", icon: "star" },
   { key: "navDj", href: "#/category/dj" },
   { key: "navSonido", href: "#/category/sonido" },
   { key: "navEstudio", href: "#/category/estudio" },
@@ -1216,7 +1250,7 @@ const NAV_LINKS = [
 
 function applyChrome() {
   document.getElementById("mainNav").innerHTML = NAV_LINKS
-    .map((l) => `<a href="${l.href}" class="${l.cls || ""}">${t(l.key)}</a>`).join("") + `
+    .map((l) => `<a href="${l.href}" class="${l.cls || ""}">${l.icon ? icon(l.icon) + " " : ""}${t(l.key)}</a>`).join("") + `
     <div class="mainnav__utils">
       <select class="mainnav__lang-select" id="mainnavLangSelect" aria-label="Idioma">
         ${Object.entries(LOCALES).map(([code, l]) => `

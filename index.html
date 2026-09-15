@@ -17,6 +17,10 @@
     if (saved) document.documentElement.setAttribute("data-theme", saved);
     var dark = saved ? saved === "dark" : (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
     document.getElementById("favicon").href = dark ? "assets/favicon-dark.png" : "assets/favicon-light.png";
+    /* Version B del hero para comparar: victorso.com/?heroB=1 */
+    if (new URLSearchParams(location.search).get("heroB") === "1") {
+      document.documentElement.classList.add("hero-b");
+    }
   })();
 </script>
 </head>
