@@ -71,10 +71,12 @@
   --nav-surface: rgba(255,255,255,.08);
   --nav-surface-hover: rgba(255,255,255,.14);
   --nav-overlay: rgba(6,6,8,.88);
+  --ticker-logo-border: var(--border);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    --ticker-logo-border: var(--border);
     --bg: #0c0c0e;
     --surface: #17171a;
     --surface-alt: #1e1e22;
@@ -295,10 +297,11 @@ body.nav-open { overflow: hidden; }
   min-height: calc(100svh - var(--topchrome-offset, 140px));
   max-height: 820px;
 }
-.storehero__scrollhint { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 6px; color: var(--text-soft); font-size: .64rem; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
-.storehero__scrollhint .icon { font-size: 1.15rem; animation: storehero-bob 1.8s ease-in-out infinite; }
+.storehero__scrollhint { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.storehero__scrollhint-circle { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--surface-alt); border: 1px solid var(--border); color: var(--text-muted); font-size: 1.05rem; animation: storehero-bob 1.8s ease-in-out infinite; }
+.storehero__scrollhint-text { color: var(--text-soft); font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; }
 @keyframes storehero-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
-@media (prefers-reduced-motion: reduce) { .storehero__scrollhint .icon { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .storehero__scrollhint-circle { animation: none; } }
 .storehero__grid { max-width: var(--maxw); margin: 0 auto; padding: 0 16px; display: grid; grid-template-columns: 1fr; gap: 14px; }
 .storehero__grid--desktop { display: none; }
 @media (min-width: 760px) {
@@ -336,6 +339,8 @@ body.nav-open { overflow: hidden; }
 }
 @media (min-width: 900px) { .storehero__slide { min-height: 320px; } }
 @media (prefers-reduced-motion: reduce) { .storehero__track { transition: none; } }
+@media (max-height: 820px) and (min-width: 760px) { .storehero__slide { min-height: 230px; } }
+@media (max-height: 720px) and (min-width: 760px) { .storehero { gap: 16px; } .storehero__brands .ticker__logo { height: 54px; padding: 8px 20px; } }
 
 .storehero__ctaWrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 @media (min-width: 480px) { .storehero__ctaWrap { flex-direction: row; justify-content: center; flex-wrap: wrap; } }
@@ -372,7 +377,9 @@ body.nav-open { overflow: hidden; }
 .storehero__brands .ticker { padding: 10px 0; }
 .storehero__brands .ticker__track { gap: 14px; }
 .storehero__brands .ticker__pill { background: var(--surface); border-color: var(--border); color: var(--text-muted); }
-.storehero__brands .ticker__logo { height: 60px; padding: 10px 24px; }
+/* En modo claro el borde por defecto (gris muy claro) se pierde sobre el
+   fondo blanco de la pagina; se marca mas para que la tarjeta se distinga. */
+.storehero__brands .ticker__logo { height: 70px; padding: 12px 26px; border-color: var(--ticker-logo-border, var(--border-strong)); }
 
 /* Viewports bajos (móvil en horizontal, ventanas de escritorio poco altas):
    van al final de toda la sección del hero para ganarle a cualquier regla
@@ -384,10 +391,9 @@ body.nav-open { overflow: hidden; }
   .storehero__info { padding: 8px 14px; }
   .storehero__title { font-size: 1rem; }
   .storehero__ctaWrap { gap: 6px; }
-  .storehero__brands .ticker__logo { height: 38px; padding: 5px 14px; }
+  .storehero__brands .ticker__logo { height: 46px; padding: 6px 16px; }
   .storehero__brands .ticker { padding: 5px 0; }
   .storehero__brandsLabel { margin-bottom: 2px; }
-  .storehero__scrollhint { margin-top: 0; }
 }
 @media (max-height: 520px) {
   .storehero { gap: 4px; }
@@ -395,8 +401,8 @@ body.nav-open { overflow: hidden; }
   .storehero__badge, .storehero__eyebrow, .storehero__price { display: none; }
   .storehero__ctaBtn--outline { display: none; }
 }
-@media (max-height: 360px) {
-  .storehero__grid, .storehero__brands .ticker { display: none; }
+@media (max-height: 420px) {
+  .storehero__grid, .storehero__brands { display: none; }
 }
 
 /* ---------- Descubre mas (instalaciones / contacto / conocenos) ---------- */

@@ -369,7 +369,10 @@ function storeHeroMarkup() {
     <div class="storehero__brands">
       <span class="storehero__brandsLabel">${t("sectionBrands")}</span>
       ${brandStrip()}
-      <div class="storehero__scrollhint">${icon("chevronDown")}<span>${t("scrollHint")}</span></div>
+    </div>
+    <div class="storehero__scrollhint">
+      <span class="storehero__scrollhint-circle">${icon("chevronDown")}</span>
+      <span class="storehero__scrollhint-text">${t("scrollHint")}</span>
     </div>
   </section>`;
 }
