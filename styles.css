@@ -307,7 +307,7 @@ body.nav-open { overflow: hidden; }
 .storehero__grid { max-width: var(--maxw); margin: 10px auto 0; padding: 0 16px; display: grid; grid-template-columns: 1fr; gap: 14px; }
 .storehero__grid--desktop { display: none; }
 @media (min-width: 1000px) {
-  .storehero__grid--desktop { display: grid; grid-template-columns: repeat(2, minmax(460px, 1fr)); }
+  .storehero__grid--desktop { display: grid; grid-template-columns: repeat(2, minmax(460px, 580px)); justify-content: center; }
   .storehero__grid--mobile { display: none; }
 }
 .storehero__panel { position: relative; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); transition: box-shadow .3s var(--ease), transform .3s var(--ease); }
