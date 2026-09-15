@@ -306,12 +306,12 @@ body.nav-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) { .storehero__scrollhint-circle { animation: none; } }
 .storehero__grid { max-width: var(--maxw); margin: 10px auto 0; padding: 0 16px; display: grid; grid-template-columns: 1fr; gap: 14px; }
 .storehero__grid--desktop { display: none; }
-@media (min-width: 760px) {
-  .storehero__grid--desktop { display: grid; grid-template-columns: 1fr 1fr; }
+@media (min-width: 820px) {
+  .storehero__grid--desktop { display: grid; grid-template-columns: repeat(2, minmax(380px, 1fr)); }
   .storehero__grid--mobile { display: none; }
 }
-.storehero__panel { position: relative; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); transition: box-shadow .3s var(--ease); }
-.storehero__panel:hover, .storehero__panel:focus-within { box-shadow: var(--shadow-lg); }
+.storehero__panel { position: relative; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); transition: box-shadow .3s var(--ease), transform .3s var(--ease); }
+.storehero__panel:hover, .storehero__panel:focus-within { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
 .storehero__track { display: flex; transition: transform .5s var(--ease); }
 .storehero__slide {
   position: relative; flex: 0 0 100%; display: flex; flex-direction: column; justify-content: flex-end;
@@ -359,8 +359,8 @@ body.nav-open { overflow: hidden; }
   .storehero__info { padding: 34px; max-width: 560px; }
 }
 @media (prefers-reduced-motion: reduce) { .storehero__track { transition: none; } }
-@media (max-height: 820px) and (min-width: 760px) { .storehero__slide { min-height: 240px; } .storehero__title { font-size: 1.5rem; } .storehero__info { padding: 22px; } }
-@media (max-height: 720px) and (min-width: 760px) { .storehero { gap: 10px; } .storehero__brands .ticker__logo { height: 52px; padding: 7px 18px; } }
+@media (max-height: 820px) and (min-width: 820px) { .storehero__slide { min-height: 240px; } .storehero__title { font-size: 1.5rem; } .storehero__info { padding: 22px; } }
+@media (max-height: 720px) and (min-width: 820px) { .storehero { gap: 10px; } .storehero__brands .ticker__logo { height: 52px; padding: 7px 18px; } }
 @media (max-height: 820px) { .storehero__grid { margin-top: 4px; } .storehero__scrollhint { margin-top: -4px; } }
 
 .storehero__ctaWrap { display: flex; flex-direction: column; align-items: center; gap: 10px; }
