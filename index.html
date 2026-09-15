@@ -15,8 +15,10 @@
   (function () {
     var saved = localStorage.getItem("vs_demo_theme");
     if (saved) document.documentElement.setAttribute("data-theme", saved);
-    var dark = saved ? saved === "dark" : (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
-    document.getElementById("favicon").href = dark ? "assets/favicon-dark.png" : "assets/favicon-light.png";
+    /* El favicon sigue solo el modo oscuro del navegador/SO, nunca el
+       tema que se pueda cambiar manualmente en la web. */
+    var browserDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    document.getElementById("favicon").href = browserDark ? "assets/favicon-dark.png" : "assets/favicon-light.png";
   })();
 </script>
 </head>

@@ -117,10 +117,19 @@ const Theme = {
     const navLabel = document.getElementById("mainnavThemeLabel");
     if (navIcon) navIcon.innerHTML = iconHtml;
     if (navLabel) navLabel.textContent = label;
-    const favicon = document.getElementById("favicon");
-    if (favicon) favicon.href = dark ? "assets/favicon-dark.png" : "assets/favicon-light.png";
   },
 };
+
+/* El favicon sigue el modo oscuro del navegador/SO, no el tema de la web. */
+(function watchBrowserFavicon() {
+  const mq = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)");
+  const apply = () => {
+    const favicon = document.getElementById("favicon");
+    if (favicon) favicon.href = mq && mq.matches ? "assets/favicon-dark.png" : "assets/favicon-light.png";
+  };
+  apply();
+  if (mq && mq.addEventListener) mq.addEventListener("change", apply);
+})();
 
 /* ---------------------------------------------------------------------- */
 /* Carrito (estado local, persistido en localStorage)                     */
