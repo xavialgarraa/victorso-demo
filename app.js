@@ -258,9 +258,13 @@ function brandLogo(b) {
 }
 
 function brandStrip() {
+  // Solo las marcas historicas de la tienda se muestran en el ticker;
+  // el resto viven en el indice completo de marcas (#/marcas).
+  const featured = BRANDS.filter((b) => b.featured);
+  const items = featured.map(brandLogo).join("")
+    + `<a class="ticker__logo ticker__logo--all" href="#/marcas">${escapeHtml(t("storeHeroAllBrandsCta"))}</a>`;
   // El contenido se duplica para que la animación pueda hacer un
   // bucle perfecto de -50% sin salto visible al reiniciar.
-  const items = BRANDS.map(brandLogo).join("");
   return `<div class="ticker"><div class="ticker__track">${items}${items}</div></div>`;
 }
 
@@ -364,9 +368,6 @@ function storeHeroMarkup() {
     <div class="storehero__grid storehero__grid--mobile">
       ${slidePanelMarkup("storeHeroMobile", mobileSlides)}
     </div>
-    <div class="storehero__grid storehero__grid--single">
-      ${slidePanelMarkup("storeHeroSingle", mobileSlides)}
-    </div>
     <div class="storehero__ctaWrap">
       <a class="storehero__ctaBtn" href="#/search">
         <span class="storehero__ctaBtn-text">${t("storeHeroCtaBtn")}</span>
@@ -450,7 +451,6 @@ function initStoreHero() {
   initSlidePanel("storeHeroLeft", 6000);
   initSlidePanel("storeHeroRight", 6000);
   initSlidePanel("storeHeroMobile", 6000);
-  initSlidePanel("storeHeroSingle", 6000);
   document.getElementById("storeHeroCatBtn")?.addEventListener("click", () => {
     document.getElementById("categorySection")?.scrollIntoView({ behavior: "smooth", block: "start" });
   });
