@@ -374,6 +374,31 @@ body.nav-open { overflow: hidden; }
 .storehero__brands .ticker__pill { background: var(--surface); border-color: var(--border); color: var(--text-muted); }
 .storehero__brands .ticker__logo { height: 60px; padding: 10px 24px; }
 
+/* Viewports bajos (móvil en horizontal, ventanas de escritorio poco altas):
+   van al final de toda la sección del hero para ganarle a cualquier regla
+   anterior (ancho, paneles, botones, marcas...) sea cual sea el ancho, y
+   así el aviso de "sigue bajando" siempre quepa sin hacer scroll. */
+@media (max-height: 640px) {
+  .storehero { padding: 6px 0; gap: 10px; }
+  .storehero__slide { min-height: 130px; }
+  .storehero__info { padding: 8px 14px; }
+  .storehero__title { font-size: 1rem; }
+  .storehero__ctaWrap { gap: 6px; }
+  .storehero__brands .ticker__logo { height: 38px; padding: 5px 14px; }
+  .storehero__brands .ticker { padding: 5px 0; }
+  .storehero__brandsLabel { margin-bottom: 2px; }
+  .storehero__scrollhint { margin-top: 0; }
+}
+@media (max-height: 520px) {
+  .storehero { gap: 4px; }
+  .storehero__slide { min-height: 90px; }
+  .storehero__badge, .storehero__eyebrow, .storehero__price { display: none; }
+  .storehero__ctaBtn--outline { display: none; }
+}
+@media (max-height: 360px) {
+  .storehero__grid, .storehero__brands .ticker { display: none; }
+}
+
 /* ---------- Descubre mas (instalaciones / contacto / conocenos) ---------- */
 .discover { padding-top: 30px; }
 .discover__grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
@@ -666,7 +691,9 @@ body.nav-open { overflow: hidden; }
 
 /* ---------- Página de marca ---------- */
 .brand-page__inner { max-width: 640px; text-align: center; margin: 0 auto; }
-.brand-page__logo { display: flex; align-items: center; justify-content: center; height: 90px; margin: 0 auto 20px; }
+/* Fondo blanco fijo: algunos logos de marca son oscuros/negros y
+   quedarian invisibles sobre el fondo de la pagina en modo oscuro. */
+.brand-page__logo { display: flex; align-items: center; justify-content: center; height: 90px; margin: 0 auto 20px; padding: 16px 28px; background: #fff; border-radius: var(--radius); box-shadow: var(--shadow); box-sizing: content-box; width: fit-content; }
 .brand-page__logo img { max-height: 100%; max-width: 220px; object-fit: contain; }
 .brand-page .visit-text { margin: 0 auto 22px; }
 .brand-page__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
