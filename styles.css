@@ -293,7 +293,7 @@ body.nav-open { overflow: hidden; }
    scroll (ni se corta a media franja, ni se ve ya la siguiente sección). */
 .storehero {
   position: relative;
-  display: flex; flex-direction: column; justify-content: space-between;
+  display: flex; flex-direction: column; justify-content: flex-start;
   box-sizing: border-box; padding: 10px 0; gap: 12px;
   min-height: calc(100vh - var(--topchrome-offset, 140px));
   min-height: calc(100svh - var(--topchrome-offset, 140px));
@@ -304,19 +304,19 @@ body.nav-open { overflow: hidden; }
 .storehero__scrollhint-text { color: var(--text-soft); font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .6px; }
 @keyframes storehero-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 @media (prefers-reduced-motion: reduce) { .storehero__scrollhint-circle { animation: none; } }
-.storehero__grid { max-width: var(--maxw); margin: 10px auto 0; padding: 0 16px; display: grid; grid-template-columns: 1fr; gap: 14px; }
+.storehero__grid { max-width: var(--maxw); width: 100%; margin: 10px auto 0; padding: 0 16px; box-sizing: border-box; display: grid; grid-template-columns: 1fr; gap: 14px; flex: 1 1 auto; min-height: 0; }
 .storehero__grid--desktop { display: none; }
 @media (min-width: 1000px) {
   .storehero__grid { max-width: 1400px; }
   .storehero__grid--desktop { display: grid; grid-template-columns: repeat(2, minmax(460px, 660px)); justify-content: center; }
   .storehero__grid--mobile { display: none; }
 }
-.storehero__panel { position: relative; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); transition: box-shadow .3s var(--ease), transform .3s var(--ease); }
+.storehero__panel { position: relative; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow); transition: box-shadow .3s var(--ease), transform .3s var(--ease); height: 100%; }
 .storehero__panel:hover, .storehero__panel:focus-within { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
-.storehero__track { display: flex; transition: transform .5s var(--ease); }
+.storehero__track { display: flex; height: 100%; transition: transform .5s var(--ease); }
 .storehero__slide {
   position: relative; flex: 0 0 100%; display: flex; flex-direction: column; justify-content: flex-end;
-  min-height: 210px; overflow: hidden; text-decoration: none;
+  min-height: 210px; height: 100%; overflow: hidden; text-decoration: none;
 }
 .storehero__slide:focus-visible { outline: 2px solid var(--red); outline-offset: -3px; }
 .storehero__slide-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; transition: transform .5s var(--ease); }
@@ -361,7 +361,6 @@ body.nav-open { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) { .storehero__track { transition: none; } }
 @media (max-height: 820px) and (min-width: 1000px) {
-  .storehero { min-height: 0; justify-content: flex-start; }
   .storehero__slide { min-height: 340px; } .storehero__title { font-size: 1.7rem; } .storehero__info { padding: 22px; } .storehero__brands .ticker__logo { height: 60px; padding: 9px 20px; }
 }
 @media (max-height: 720px) and (min-width: 1000px) { .storehero { gap: 8px; } .storehero__slide { min-height: 280px; } .storehero__brands .ticker__logo { height: 48px; padding: 6px 16px; } }
