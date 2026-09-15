@@ -361,7 +361,7 @@ body.nav-open { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) { .storehero__track { transition: none; } }
 @media (max-height: 820px) and (min-width: 1000px) {
-  .storehero { min-height: calc(100vh - var(--topchrome-offset, 140px) - 60px); min-height: calc(100svh - var(--topchrome-offset, 140px) - 60px); }
+  .storehero { min-height: 0; justify-content: flex-start; }
   .storehero__slide { min-height: 340px; } .storehero__title { font-size: 1.7rem; } .storehero__info { padding: 22px; } .storehero__brands .ticker__logo { height: 60px; padding: 9px 20px; }
 }
 @media (max-height: 720px) and (min-width: 1000px) { .storehero { gap: 8px; } .storehero__slide { min-height: 280px; } .storehero__brands .ticker__logo { height: 48px; padding: 6px 16px; } }
