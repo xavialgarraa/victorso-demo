@@ -259,6 +259,14 @@ function productCard(p) {
   </article>`;
 }
 
+function pdpPriceMarkup(variant) {
+  const hasOffer = variant.compareAtPrice && variant.compareAtPrice > variant.price;
+  const pct = hasOffer ? Math.round((1 - variant.price / variant.compareAtPrice) * 100) : 0;
+  return `
+    <span class="now">${euros(variant.price)}</span>
+    ${hasOffer ? `<span class="was">${euros(variant.compareAtPrice)}</span><span class="badge badge--offer">-${pct}%</span>` : ""}`;
+}
+
 function brandLogo(b) {
   const href = `#/brand/${b.slug}`;
   return b.logo
@@ -765,10 +773,7 @@ function renderProduct(handle) {
       <h1 class="pdp__title">${escapeHtml(p.title)}</h1>
       <div class="pdp__rating"><span class="stars">${stars(p.rating)}</span> ${p.rating.toFixed(1)} · ${t("reviewsOf", p.reviewsCount)}</div>
 
-      <div class="pdp__price" id="pdpPrice">
-        <span class="now">${euros(currentVariant.price)}</span>
-        ${currentVariant.compareAtPrice ? `<span class="was">${euros(currentVariant.compareAtPrice)}</span>` : ""}
-      </div>
+      <div class="pdp__price" id="pdpPrice">${pdpPriceMarkup(currentVariant)}</div>
 
       <p class="pdp__desc">${escapeHtml(p.description)}</p>
 
@@ -862,9 +867,7 @@ function renderProduct(handle) {
   const variantSelect = document.getElementById("variantSelect");
   variantSelect.addEventListener("change", () => {
     currentVariant = findVariant(p, variantSelect.value);
-    document.getElementById("pdpPrice").innerHTML = `
-      <span class="now">${euros(currentVariant.price)}</span>
-      ${currentVariant.compareAtPrice ? `<span class="was">${euros(currentVariant.compareAtPrice)}</span>` : ""}`;
+    document.getElementById("pdpPrice").innerHTML = pdpPriceMarkup(currentVariant);
     document.getElementById("addPriceLabel").textContent = euros(currentVariant.price);
     const stockMsg = document.getElementById("stockMsg");
     const addBtn = document.getElementById("addToCartBtn");
@@ -1147,7 +1150,7 @@ function renderCheckout() {
   <section class="section">
     <div class="container">
       <div class="mock-note">${icon("shield")}<span>${t("mockNote")}</span></div>
-      <div class="checkout-steps"><span>${t("step1")}</span> → <span class="active">${t("step2")}</span> → <span>${t("step3")}</span></div>
+      <div class="checkout-steps"><span data-step="1">${t("step1")}</span><i class="checkout-steps__sep"></i><span class="active" data-step="2">${t("step2")}</span><i class="checkout-steps__sep"></i><span data-step="3">${t("step3")}</span></div>
 
       <div class="checkout">
         <div>
