@@ -259,12 +259,32 @@ h1, h2, h3, h4, .section__head h2, .section-title-lg { font-weight: 700; letter-
 @media (min-width: 900px) {
   .burger { display: none; }
   .mainnav__utils { display: none; }
-  .mainnav { display: flex !important; flex-direction: row; justify-content: center; position: static; top: auto; z-index: auto; padding: 0; animation: none; }
+  .mainnav { display: flex !important; flex-direction: row; justify-content: center; position: relative; top: auto; z-index: auto; padding: 0; animation: none; }
   .mainnav.open a { padding: 8px 18px; font-size: inherit; font-weight: 500; }
   .mainnav a { border-bottom: none; padding: 8px 18px; position: relative; transition: color .2s ease; }
-  .mainnav a::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 3px; height: 2px; background: var(--nav-accent); border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform .22s var(--ease); }
+  .mainnav a::after { content: ""; position: absolute; left: 18px; right: 18px; bottom: 3px; height: 2px; background: var(--nav-accent); border-radius: 2px; box-shadow: 0 0 7px rgba(255,91,98,.75); transform: scaleX(0); transform-origin: left; transition: transform .22s var(--ease); }
   .mainnav a:hover::after { transform: scaleX(1); }
   .header__inner { padding: 10px 24px; }
+
+  /* Franja tipo tira LED que separa el menu de categorias de la cabecera,
+     guino a que la tienda vende equipos de iluminacion. */
+  .mainnav::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,91,98,.18) 15%, var(--nav-accent) 50%, rgba(255,91,98,.18) 85%, transparent 100%);
+    background-size: 220% 100%;
+    box-shadow: 0 0 9px rgba(255,91,98,.6), 0 1px 3px rgba(255,91,98,.3);
+    animation: mainnav-led-shimmer 7s ease-in-out infinite;
+  }
+}
+@keyframes mainnav-led-shimmer {
+  0%, 100% { background-position: 0% 0; }
+  50% { background-position: 100% 0; }
+}
+@media (min-width: 900px) and (prefers-reduced-motion: reduce) {
+  .mainnav::before { animation: none; }
 }
 
 body.nav-open { overflow: hidden; }
