@@ -1374,6 +1374,8 @@ function initChrome() {
   document.getElementById("themeToggle").addEventListener("click", () => Theme.toggle());
   Theme.updateIcon();
 
+  document.getElementById("loginBtn").addEventListener("click", () => toast(t("loginComingSoon")));
+
   document.getElementById("searchForm").addEventListener("submit", (e) => {
     e.preventDefault();
     const q = document.getElementById("searchInput").value.trim();

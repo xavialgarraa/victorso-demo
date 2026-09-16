@@ -113,6 +113,7 @@ const I18N = {
     productNotFound: "Producto no encontrado", categoryLabel: "Categoría", backHome: "Volver al inicio",
     notFound: "Página no encontrada",
     themeDark: "Modo oscuro", themeLight: "Modo claro",
+    loginCta: "Iniciar sesión", loginComingSoon: "El acceso de clientes llega muy pronto",
   },
   en: {
     shipBanner: "Free shipping across mainland Spain on orders over €149",
@@ -212,6 +213,7 @@ const I18N = {
     productNotFound: "Product not found", categoryLabel: "Category", backHome: "Back to home",
     notFound: "Page not found",
     themeDark: "Dark mode", themeLight: "Light mode",
+    loginCta: "Sign in", loginComingSoon: "Customer sign-in is coming soon",
   },
   fr: {
     shipBanner: "Livraison gratuite en Espagne péninsulaire dès 149€ d'achat",
@@ -311,6 +313,7 @@ const I18N = {
     productNotFound: "Produit introuvable", categoryLabel: "Catégorie", backHome: "Retour à l'accueil",
     notFound: "Page introuvable",
     themeDark: "Mode sombre", themeLight: "Mode clair",
+    loginCta: "Se connecter", loginComingSoon: "L'accès client arrive très bientôt",
   },
   pt: {
     shipBanner: "Envio grátis para a Península em pedidos superiores a 149€",
@@ -408,6 +411,7 @@ const I18N = {
     productNotFound: "Produto não encontrado", categoryLabel: "Categoria", backHome: "Voltar ao início",
     notFound: "Página não encontrada",
     themeDark: "Modo escuro", themeLight: "Modo claro",
+    loginCta: "Iniciar sessão", loginComingSoon: "O acesso de clientes chega muito em breve",
   },
   ca: {
     shipBanner: "Enviament gratuït a tota la Península en comandes superiors a 149€",
@@ -505,6 +509,7 @@ const I18N = {
     productNotFound: "Producte no trobat", categoryLabel: "Categoria", backHome: "Tornar a l'inici",
     notFound: "Pàgina no trobada",
     themeDark: "Mode fosc", themeLight: "Mode clar",
+    loginCta: "Inicia sessió", loginComingSoon: "L'accés de clients arriba molt aviat",
   },
 };
 
