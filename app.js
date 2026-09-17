@@ -628,6 +628,34 @@ function renderSearch(query) {
   });
 }
 
+const PER_PAGE_OPTIONS = [12, 24, 48];
+
+function paginationMarkup(current, total, perPage) {
+  const perPageField = `
+    <label class="per-page">${t("perPageLabel")}
+      <select id="perPageSelect">
+        ${PER_PAGE_OPTIONS.map((n) => `<option value="${n}" ${n === perPage ? "selected" : ""}>${n}</option>`).join("")}
+      </select>
+    </label>`;
+  if (total <= 1) return `<div class="pagination pagination--single">${perPageField}</div>`;
+
+  const pages = [];
+  for (let i = 1; i <= total; i++) {
+    if (i === 1 || i === total || Math.abs(i - current) <= 1) pages.push(i);
+    else if (pages[pages.length - 1] !== "…") pages.push("…");
+  }
+  return `
+  <div class="pagination">
+    <button type="button" class="pagination__nav" data-page="${current - 1}" ${current === 1 ? "disabled" : ""} aria-label="${t("pagePrev")}">${icon("chevronLeft")}</button>
+    ${pages.map((p) => p === "…"
+      ? `<span class="pagination__ellipsis">…</span>`
+      : `<button type="button" class="pagination__num ${p === current ? "active" : ""}" data-page="${p}">${p}</button>`
+    ).join("")}
+    <button type="button" class="pagination__nav" data-page="${current + 1}" ${current === total ? "disabled" : ""} aria-label="${t("pageNext")}">${icon("chevronRight")}</button>
+    ${perPageField}
+  </div>`;
+}
+
 function renderListing({ title, baseProducts, query, basePath }) {
   const allBrands = [...new Set(baseProducts.map((p) => p.vendor))].sort();
   const selectedBrands = query.getAll("brand");
@@ -635,6 +663,8 @@ function renderListing({ title, baseProducts, query, basePath }) {
   const maxPrice = query.get("max") || "";
   const sort = query.get("sort") || "relevance";
   const onlyOffers = query.get("offers") === "1";
+  const view = query.get("view") === "list" ? "list" : "grid";
+  const perPage = PER_PAGE_OPTIONS.includes(Number(query.get("perPage"))) ? Number(query.get("perPage")) : PER_PAGE_OPTIONS[0];
 
   let products = baseProducts.filter((p) => {
     if (selectedBrands.length && !selectedBrands.includes(p.vendor)) return false;
@@ -652,6 +682,11 @@ function renderListing({ title, baseProducts, query, basePath }) {
     default: break;
   }
 
+  const totalProducts = products.length;
+  const totalPages = Math.max(1, Math.ceil(totalProducts / perPage));
+  const page = Math.min(totalPages, Math.max(1, parseInt(query.get("page") || "1", 10) || 1));
+  const pageProducts = products.slice((page - 1) * perPage, page * perPage);
+
   APP.innerHTML = `
   <div class="breadcrumb"><a href="#/">${t("breadcrumbHome")}</a> / ${escapeHtml(title)}</div>
   <section class="section listing">
@@ -659,7 +694,11 @@ function renderListing({ title, baseProducts, query, basePath }) {
       <div class="section__head"><h2>${escapeHtml(title)}</h2></div>
       <div class="listing__toolbar">
         <button class="btn btn--outline filter-toggle" id="filterToggle">${icon("filter")}<span>${t("filters")}</span></button>
-        <span class="listing__count">${t("results", products.length)}</span>
+        <span class="listing__count">${t("results", totalProducts)}</span>
+        <div class="view-toggle" role="group">
+          <button type="button" class="view-toggle__btn ${view === "grid" ? "active" : ""}" data-view="grid" aria-label="${t("viewGrid")}">${icon("gridView")}</button>
+          <button type="button" class="view-toggle__btn ${view === "list" ? "active" : ""}" data-view="list" aria-label="${t("viewList")}">${icon("listView")}</button>
+        </div>
         <select class="sort-select" id="sortSelect">
           <option value="relevance" ${sort === "relevance" ? "selected" : ""}>${t("sortRelevance")}</option>
           <option value="price-asc" ${sort === "price-asc" ? "selected" : ""}>${t("sortPriceAsc")}</option>
@@ -696,9 +735,10 @@ function renderListing({ title, baseProducts, query, basePath }) {
         </aside>
 
         <div>
-          ${products.length
-            ? `<div class="prodgrid">${products.map(productCard).join("")}</div>`
+          ${pageProducts.length
+            ? `<div class="prodgrid ${view === "list" ? "prodgrid--list" : ""}">${pageProducts.map(productCard).join("")}</div>`
             : `<div class="empty-state"><p>${t("noResults")}</p></div>`}
+          ${totalProducts ? paginationMarkup(page, totalPages, perPage) : ""}
         </div>
       </div>
     </div>
@@ -712,13 +752,33 @@ function renderListing({ title, baseProducts, query, basePath }) {
     if (next.max) p.set("max", next.max);
     if (next.sort && next.sort !== "relevance") p.set("sort", next.sort);
     if (next.offers) p.set("offers", "1");
+    if (next.view && next.view !== "grid") p.set("view", next.view);
+    if (next.perPage && next.perPage !== PER_PAGE_OPTIONS[0]) p.set("perPage", next.perPage);
+    if (next.page && next.page > 1) p.set("page", next.page);
     if (query.get("q")) p.set("q", query.get("q"));
     const qs = p.toString();
     location.hash = `#${basePath}${qs ? "?" + qs : ""}`;
   }
 
   document.getElementById("sortSelect").addEventListener("change", (e) => {
-    pushQuery({ brands: selectedBrands, min: minPrice, max: maxPrice, sort: e.target.value, offers: onlyOffers });
+    pushQuery({ brands: selectedBrands, min: minPrice, max: maxPrice, sort: e.target.value, offers: onlyOffers, view, perPage, page: 1 });
+  });
+
+  document.querySelectorAll(".view-toggle__btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (btn.classList.contains("active")) return;
+      pushQuery({ brands: selectedBrands, min: minPrice, max: maxPrice, sort, offers: onlyOffers, view: btn.dataset.view, perPage, page });
+    });
+  });
+
+  document.getElementById("perPageSelect")?.addEventListener("change", (e) => {
+    pushQuery({ brands: selectedBrands, min: minPrice, max: maxPrice, sort, offers: onlyOffers, view, perPage: Number(e.target.value), page: 1 });
+  });
+
+  document.querySelectorAll("[data-page]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      pushQuery({ brands: selectedBrands, min: minPrice, max: maxPrice, sort, offers: onlyOffers, view, perPage, page: Number(btn.dataset.page) });
+    });
   });
 
   document.getElementById("applyFilters").addEventListener("click", () => {
@@ -726,7 +786,7 @@ function renderListing({ title, baseProducts, query, basePath }) {
     const min = document.getElementById("minPrice").value;
     const max = document.getElementById("maxPrice").value;
     const offers = document.getElementById("onlyOffers").checked;
-    pushQuery({ brands, min, max, sort, offers });
+    pushQuery({ brands, min, max, sort, offers, view, perPage, page: 1 });
   });
 
   const filterToggle = document.getElementById("filterToggle");
